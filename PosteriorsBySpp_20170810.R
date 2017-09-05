@@ -192,75 +192,6 @@ rownames(sugarSppEfx)<- NULL
 ## bind rows to creat one frame for plotting
 sppEfx <- rbind.data.frame(shrubSppEfx, protectedSppEfx, pastureSppEfx, homesteadSppEfx, sugarSppEfx )
 
-## Dirty plots of continuous effects, body size and "wing loading"
-##-----------------------------------------------------------------------------------
-## view mass/wing chord plotted against mean betas; only the shrub effect is a priori
-shrubEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Shrub cover")
-protEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Protected")
-pastEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Pasture")
-homeEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Homestead")
-sugarEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Plantation")
-
-## full posterior samples
-par(mfrow = c(2,3))
-summary(lm(Outputs_long$beta1~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$beta1 )
-abline(m1<-lm(Outputs_long$beta1~Outputs_long$pseudo_loading))
-
-summary(lm(Outputs_long$`beta.l[1]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[1]` )
-abline(m1<-lm(Outputs_long$`beta.l[1]`~Outputs_long$pseudo_loading))
-
-summary(lm(Outputs_long$`beta.l[2]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[2]` )
-abline(m1<-lm(Outputs_long$`beta.l[2]`~Outputs_long$pseudo_loading))
-
-summary(lm(Outputs_long$`beta.l[3]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[3]`)
-abline(m1<-lm(Outputs_long$`beta.l[3]`~Outputs_long$pseudo_loading))
-
-summary(lm(Outputs_long$`beta.l[4]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[4]`)
-abline(m1<-lm(Outputs_long$`beta.l[4]`~Outputs_long$pseudo_loading))
-
-##----------------------------- MEANS ONLY
-plot(protEfxAndTraits$pseudo_loading, protEfxAndTraits$effect)  
-summary(lm(protEfxAndTraits$effect~protEfxAndTraits$pseudo_loading))
-
-plot(pastEfxAndTraits$pseudo_loading, pastEfxAndTraits$effect)  
-summary(lm(pastEfxAndTraits$effect~pastEfxAndTraits$pseudo_loading))
-
-plot(homeEfxAndTraits$pseudo_loading, homeEfxAndTraits$effect)  
-summary(lm(homeEfxAndTraits$effect~homeEfxAndTraits$pseudo_loading))
-
-plot(sugarEfxAndTraits$pseudo_loading, sugarEfxAndTraits$effect)  
-summary(lm(sugarEfxAndTraits$effect~sugarEfxAndTraits$pseudo_loading))
-
-plot(shrubEfxAndTraits$pseudo_loading, shrubEfxAndTraits$effect)  
-summary(lm(shrubEfxAndTraits$effect~shrubEfxAndTraits$pseudo_loading))
-##-----------------------------------------------------------------------------------
-## view mass plotted against betas
-plot(log(shrubEfxAndTraits$Mass), shrubEfxAndTraits$effect)  
-summary(lm(shrubEfxAndTraits$effect~log(shrubEfxAndTraits$Mass)))
-
-plot(log(protEfxAndTraits$Mass), protEfxAndTraits$effect)        
-summary(lm(protEfxAndTraits$effect~log(protEfxAndTraits$Mass)))
-
-plot(log(pastEfxAndTraits$Mass), pastEfxAndTraits$effect)  
-summary(lm(pastEfxAndTraits$effect~log(pastEfxAndTraits$Mass)))
-
-plot(log(homeEfxAndTraits$Mass), homeEfxAndTraits$effect)  
-summary(lm(homeEfxAndTraits$effect~log(homeEfxAndTraits$Mass)))
-
-plot(log(sugarEfxAndTraits$Mass), sugarEfxAndTraits$effect)  
-summary(lm(sugarEfxAndTraits$effect~log(sugarEfxAndTraits$Mass)))
-
-
 ##-------------------------------------
 ## build data frames with nest and diet summary effects for plotting
 ## Nest substrates
@@ -598,4 +529,75 @@ mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) +
 
 grid.arrange(mass.fig.shrub, ncol = 1)
 grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2)
+
+
+
+## Plotting code to delete
+## Dirty plots of continuous effects, body size and "wing loading"
+##-----------------------------------------------------------------------------------
+## view mass/wing chord plotted against mean betas; only the shrub effect is a priori
+shrubEfxAndTraits <- merge(sppEfx, TraitData) %>% 
+  filter(betaName == "Shrub cover")
+protEfxAndTraits <- merge(sppEfx, TraitData) %>% 
+  filter(betaName == "Protected")
+pastEfxAndTraits <- merge(sppEfx, TraitData) %>% 
+  filter(betaName == "Pasture")
+homeEfxAndTraits <- merge(sppEfx, TraitData) %>% 
+  filter(betaName == "Homestead")
+sugarEfxAndTraits <- merge(sppEfx, TraitData) %>% 
+  filter(betaName == "Plantation")
+
+## full posterior samples
+par(mfrow = c(2,3))
+summary(lm(Outputs_long$beta1~Outputs_long$pseudo_loading))
+plot(Outputs_long$pseudo_loading,Outputs_long$beta1 )
+abline(m1<-lm(Outputs_long$beta1~Outputs_long$pseudo_loading))
+
+summary(lm(Outputs_long$`beta.l[1]`~Outputs_long$pseudo_loading))
+plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[1]` )
+abline(m1<-lm(Outputs_long$`beta.l[1]`~Outputs_long$pseudo_loading))
+
+summary(lm(Outputs_long$`beta.l[2]`~Outputs_long$pseudo_loading))
+plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[2]` )
+abline(m1<-lm(Outputs_long$`beta.l[2]`~Outputs_long$pseudo_loading))
+
+summary(lm(Outputs_long$`beta.l[3]`~Outputs_long$pseudo_loading))
+plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[3]`)
+abline(m1<-lm(Outputs_long$`beta.l[3]`~Outputs_long$pseudo_loading))
+
+summary(lm(Outputs_long$`beta.l[4]`~Outputs_long$pseudo_loading))
+plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[4]`)
+abline(m1<-lm(Outputs_long$`beta.l[4]`~Outputs_long$pseudo_loading))
+
+##----------------------------- MEANS ONLY
+plot(protEfxAndTraits$pseudo_loading, protEfxAndTraits$effect)  
+summary(lm(protEfxAndTraits$effect~protEfxAndTraits$pseudo_loading))
+
+plot(pastEfxAndTraits$pseudo_loading, pastEfxAndTraits$effect)  
+summary(lm(pastEfxAndTraits$effect~pastEfxAndTraits$pseudo_loading))
+
+plot(homeEfxAndTraits$pseudo_loading, homeEfxAndTraits$effect)  
+summary(lm(homeEfxAndTraits$effect~homeEfxAndTraits$pseudo_loading))
+
+plot(sugarEfxAndTraits$pseudo_loading, sugarEfxAndTraits$effect)  
+summary(lm(sugarEfxAndTraits$effect~sugarEfxAndTraits$pseudo_loading))
+
+plot(shrubEfxAndTraits$pseudo_loading, shrubEfxAndTraits$effect)  
+summary(lm(shrubEfxAndTraits$effect~shrubEfxAndTraits$pseudo_loading))
+##-----------------------------------------------------------------------------------
+## view mass plotted against betas
+plot(log(shrubEfxAndTraits$Mass), shrubEfxAndTraits$effect)  
+summary(lm(shrubEfxAndTraits$effect~log(shrubEfxAndTraits$Mass)))
+
+plot(log(protEfxAndTraits$Mass), protEfxAndTraits$effect)        
+summary(lm(protEfxAndTraits$effect~log(protEfxAndTraits$Mass)))
+
+plot(log(pastEfxAndTraits$Mass), pastEfxAndTraits$effect)  
+summary(lm(pastEfxAndTraits$effect~log(pastEfxAndTraits$Mass)))
+
+plot(log(homeEfxAndTraits$Mass), homeEfxAndTraits$effect)  
+summary(lm(homeEfxAndTraits$effect~log(homeEfxAndTraits$Mass)))
+
+plot(log(sugarEfxAndTraits$Mass), sugarEfxAndTraits$effect)  
+summary(lm(sugarEfxAndTraits$effect~log(sugarEfxAndTraits$Mass)))
 
