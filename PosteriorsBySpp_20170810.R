@@ -519,8 +519,7 @@ for(j in 2:6){           ### corresponds to column numbers for each covariate
 ggplot(data = sppEfx, aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 4) +                     
-  scale_fill_manual(values = c("gray50","orange","blue"))+
-  geom_hline(aes(yintercept = 0))+
+  #geom_hline(aes(yintercept = 0))+                ### keep zero line???
   ylab("Effect size (95% CRI)")+
   scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
   coord_flip()+
