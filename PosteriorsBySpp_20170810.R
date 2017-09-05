@@ -78,13 +78,12 @@ pasture.post<-subset(Outputs_long, select=c("X", "Species","beta.l[2]"))
 protected.post<-subset(Outputs_long, select=c("X", "Species","beta.l[3]"))
 sugarEstate.post<-subset(Outputs_long, select=c("X", "Species","beta.l[4]"))
 
-#reformat to make species columns and posterior samples are rows with dcast
+#reformat to make species columns and posterior samples rows with dcast
 shrub.post <- dcast(shrub.post, X~Species)
 homestead.post <- dcast(homestead.post, X~Species)
 pasture.post <- dcast(pasture.post, X~Species)
 protected.post <- dcast(protected.post, X~Species)
 sugarEstate.post <- dcast(sugarEstate.post, X~Species)
-
 
 #take rowMeans based on species list
 shrub.post$nest.shrub <- rowMeans(shrub.post[,names(shrub.post) %in% nest.shrub$Species])
@@ -298,6 +297,11 @@ diet.summary <- rbind.data.frame(shrub.post.diet, protected.post.diet, pasture.p
                                  sugarEstate.post.diet, stringsAsFactors = FALSE)
 
 
+#### Assess effects of continuous covariates using a regression approach
+#### Fit a linear model to each row, where rows are posterior samples of a covariate's value and each
+#### column is a species; select columns according to species' traits
+
+Outputs_long
 ####-----------------------------------------------------------------------------------
 ###------------------------------------------------------------------------------------
 
