@@ -56,15 +56,6 @@ pooledSugarEstateCRI
 pooledShrubCRI <-  quantile(Outputs_long[,5], probs = c(0.025,0.975)) 
 pooledShrubCRI
 
-par(mfrow = c(2,3))
-for(i in 1:5){
-  plot(density(Outputs_long[,i])) 
-  abline(v = quantile(Outputs_long[,i], probs = 0.025), col = "blue" )
-  abline(v = quantile(Outputs_long[,i], probs = 0.975), col= "blue" )
-}
-par(mfrow = c(1, 1))
-
-
 #create vectors of species by trait
 ## nesting substrates
 nest.shrub <- subset(TraitData, ShrubNest == 1, select=c(Species))
@@ -86,7 +77,6 @@ homestead.post<-subset(Outputs_long, select=c("X", "Species","beta.l[1]"))
 pasture.post<-subset(Outputs_long, select=c("X", "Species","beta.l[2]"))
 protected.post<-subset(Outputs_long, select=c("X", "Species","beta.l[3]"))
 sugarEstate.post<-subset(Outputs_long, select=c("X", "Species","beta.l[4]"))
-
 
 #reformat to make species columns and posterior samples are rows with dcast
 shrub.post <- dcast(shrub.post, X~Species)
@@ -202,12 +192,6 @@ rownames(sugarSppEfx)<- NULL
 ## bind rows to creat one frame for plotting
 sppEfx <- rbind.data.frame(shrubSppEfx, protectedSppEfx, pastureSppEfx, homesteadSppEfx, sugarSppEfx )
 
-## add an indicator variable to distinguish significant positive and negative effects from inconclusive ones
-for(i in 1:dim(sppEfx)[1]){
-sppEfx$POSNEG[i] <- if_else (all(c(sppEfx$LCL[i] < 0, sppEfx$UCL[i] < 0) == TRUE), "Neg", 
-                           if_else(all(c(sppEfx$LCL[i] > 0, sppEfx$UCL[i] > 0) == TRUE), "Pos", "Inconclusive"))
-}
- 
 ## Dirty plots of continuous effects, body size and "wing loading"
 ##-----------------------------------------------------------------------------------
 ## view mass/wing chord plotted against mean betas; only the shrub effect is a priori
@@ -385,6 +369,20 @@ diet.summary <- rbind.data.frame(shrub.post.diet, protected.post.diet, pasture.p
 
 ####-----------------------------------------------------------------------------------
 ###------------------------------------------------------------------------------------
+
+###                    FIGURES
+##
+###-----------------------------------------------------------------------------------
+
+
+par(mfrow = c(2,3))
+for(i in 1:5){
+  plot(density(Outputs_long[,i])) 
+  abline(v = quantile(Outputs_long[,i], probs = 0.025), col = "blue" )
+  abline(v = quantile(Outputs_long[,i], probs = 0.975), col= "blue" )
+}
+
+
 #some graph code from Isabel's paper
 #Fig 4: species-specific forest plots with multiple effect sizes
 ggplot(data = sppEfx, aes(x = Species, y = effect)) + 
