@@ -46,10 +46,15 @@ rm(list=ls()[! ls() %in% c("Outputs_long","TraitData")])
 ## summarize results for the community of common species
 pooledBetas <- colMeans(Outputs_long[1:5])  
 pooledHomesteadCRI <-  quantile(Outputs_long[,1], probs = c(0.025,0.975)) 
+pooledHomesteadCRI
 pooledPastureCRI <-  quantile(Outputs_long[,2], probs = c(0.025,0.975)) 
+pooledPastureCRI
 pooledProtectedCRI <-  quantile(Outputs_long[,3], probs = c(0.025,0.975)) 
+pooledProtectedCRI
 pooledSugarEstateCRI <-  quantile(Outputs_long[,4], probs = c(0.025,0.975)) 
+pooledSugarEstateCRI 
 pooledShrubCRI <-  quantile(Outputs_long[,5], probs = c(0.025,0.975)) 
+pooledShrubCRI
 
 par(mfrow = c(2,3))
 for(i in 1:5){
