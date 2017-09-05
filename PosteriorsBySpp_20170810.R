@@ -506,12 +506,11 @@ meanAndCRI(pvals_temp)
 ##
 ###-----------------------------------------------------------------------------------
 
-
 par(mfrow = c(2,3))
-for(i in 1:5){
-  plot(density(Outputs_long[,i])) 
-  abline(v = quantile(Outputs_long[,i], probs = 0.025), col = "blue" )
-  abline(v = quantile(Outputs_long[,i], probs = 0.975), col= "blue" )
+for(j in 2:6){           ### corresponds to column numbers for each covariate
+  plot(density(Outputs_long[,j])) 
+  abline(v = quantile(Outputs_long[,j], probs = 0.025), col = "blue" )
+  abline(v = quantile(Outputs_long[,j], probs = 0.975), col= "blue" )
 }
 
 
