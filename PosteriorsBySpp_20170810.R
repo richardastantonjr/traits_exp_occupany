@@ -75,7 +75,7 @@ Outputs_long <-merge(Outputs_long, TraitData)
 shrub.post<-subset(Outputs_long, select=c("X", "Species","beta1"))
 homestead.post<-subset(Outputs_long, select=c("X", "Species","beta.l[1]"))
 pasture.post<-subset(Outputs_long, select=c("X", "Species","beta.l[2]"))
-protected.post<-subset(Outputs_long, select=c("X", "Species","beta.l[3]"))
+pasture.post<-subset(Outputs_long, select=c("X", "Species","beta.l[3]"))
 sugarEstate.post<-subset(Outputs_long, select=c("X", "Species","beta.l[4]"))
 
 #reformat to make species columns and posterior samples rows with dcast
@@ -299,9 +299,206 @@ diet.summary <- rbind.data.frame(shrub.post.diet, protected.post.diet, pasture.p
 
 #### Assess effects of continuous covariates using a regression approach
 #### Fit a linear model to each row, where rows are posterior samples of a covariate's value and each
-#### column is a species; select columns according to species' traits
+#### column is a species. Take the slopes, use to get CRIs and for plotting
 
-Outputs_long
+## Shrub cover responses
+## wing chord explains shrub cover occupancy response; linear and quadratic forms
+## moderate positive effect of wing chord on shrub cover effect size
+wingSq <- TraitData$Wing * TraitData$Wing
+wing_chord_slopes <- vector()
+wing_chord_quad_slopes <- vector()
+pvals_temp <- vector()
+for(i in 1:dim(shrub.post)[1]) {
+  wing_chord_quad_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
+  wing_chord_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
+  }
+meanAndCRI(wing_chord_slopes)
+meanAndCRI(wing_chord_quad_slopes)
+meanAndCRI(pvals_temp)
+
+## mass explains shrub cover occupancy response; linear and quadratic forms
+massSq <- TraitData$Mass * TraitData$Mass
+mass_slopes <- vector()
+mass_quad_slopes <- vector()
+for(i in 1:dim(shrub.post)[1]) {
+  mass_quad_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
+  mass_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
+  }
+meanAndCRI(mass_slopes)
+meanAndCRI(mass_quad_slopes)
+meanAndCRI(pvals_temp)
+
+## wing loading proxy #(wing chord / mass)# explains shrub cover occupancy response; linear and quadratic forms
+pseudo_load_Sq <- TraitData$pseudo_loading * TraitData$pseudo_loading
+pseudo_load_slopes <- vector()
+pseudo_load_quad_slopes <- vector()
+for(i in 1:dim(shrub.post)[1]) {
+  pseudo_load_quad_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
+  pseudo_load_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
+  }
+meanAndCRI(pseudo_load_slopes)
+meanAndCRI(pseudo_load_quad_slopes)
+meanAndCRI(pvals_temp)
+
+
+## Land-use responses
+##-----------------------------------------------------------------------------------------
+## wing chord explains land use (protection) occupancy response; linear and quadratic forms
+## Effect of protection increases with wing chord
+wing_chord_slopes_protected <- vector()
+wing_chord_quad_slopes_protected <- vector()
+for(i in 1:dim(protected.post)[1]) {
+  wing_chord_quad_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
+  wing_chord_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(wing_chord_slopes_protected)
+meanAndCRI(wing_chord_quad_slopes_protected)
+meanAndCRI(pvals_temp)
+
+## mass explains land use (protection) occupancy response; linear and quadratic forms
+mass_slopes_protected <- vector()
+mass_quad_slopes_protected <- vector()
+for(i in 1:dim(protected.post)[1]) {
+  mass_quad_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
+  mass_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(mass_slopes_protected)
+meanAndCRI(mass_quad_slopes_protected)
+meanAndCRI(pvals_temp)
+
+## wing loading proxy #(wing chord / mass)# explains land use (protection) occupancy response; linear and quadratic forms
+pseudo_load_slopes_protected <- vector()
+pseudo_load_quad_slopes_protected <- vector()
+for(i in 1:dim(protected.post)[1]) {
+  pseudo_load_quad_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
+  pseudo_load_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(pseudo_load_slopes_protected)
+meanAndCRI(pseudo_load_quad_slopes_protected)
+meanAndCRI(pvals_temp)
+
+
+## wing chord explains land use (pasture) occupancy response; linear and quadratic forms
+wing_chord_slopes_pasture <- vector()
+wing_chord_quad_slopes_pasture <- vector()
+for(i in 1:dim(pasture.post)[1]) {
+  wing_chord_quad_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
+  wing_chord_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(wing_chord_slopes_pasture)
+meanAndCRI(wing_chord_quad_slopes_pasture)
+meanAndCRI(pvals_temp)
+
+## mass explains land use (pasture) occupancy response; linear and quadratic forms
+mass_slopes_pasture <- vector()
+mass_quad_slopes_pasture <- vector()
+for(i in 1:dim(pasture.post)[1]) {
+  mass_quad_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
+  mass_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(mass_slopes_pasture)
+meanAndCRI(mass_quad_slopes_pasture)
+meanAndCRI(pvals_temp)
+
+## wing loading proxy #(wing chord / mass)# explains land use (pasture) occupancy response; linear and quadratic forms
+pseudo_load_slopes_pasture <- vector()
+pseudo_load_quad_slopes_pasture <- vector()
+for(i in 1:dim(pasture.post)[1]) {
+  pseudo_load_quad_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
+  pseudo_load_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(pseudo_load_slopes_pasture)
+meanAndCRI(pseudo_load_quad_slopes_pasture)
+meanAndCRI(pvals_temp)
+
+
+## wing chord explains land use (homestead) occupancy response; linear and quadratic forms
+wing_chord_slopes_homestead <- vector()
+wing_chord_quad_slopes_homestead <- vector()
+for(i in 1:dim(homestead.post)[1]) {
+  wing_chord_quad_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
+  wing_chord_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(wing_chord_slopes_homestead)
+meanAndCRI(wing_chord_quad_slopes_homestead)
+meanAndCRI(pvals_temp)
+
+## mass explains land use (homestead) occupancy response; linear and quadratic forms
+mass_slopes_homestead <- vector()
+mass_quad_slopes_homestead <- vector()
+for(i in 1:dim(homestead.post)[1]) {
+  mass_quad_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
+  mass_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(mass_slopes_homestead)
+meanAndCRI(mass_quad_slopes_homestead)
+meanAndCRI(pvals_temp)
+
+## wing loading proxy #(wing chord / mass)# explains land use (homestead) occupancy response; linear and quadratic forms
+pseudo_load_slopes_homestead <- vector()
+pseudo_load_quad_slopes_homestead <- vector()
+for(i in 1:dim(homestead.post)[1]) {
+  pseudo_load_quad_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
+  pseudo_load_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
+}
+meanAndCRI(pseudo_load_slopes_homestead)
+meanAndCRI(pseudo_load_quad_slopes_homestead)
+meanAndCRI(pvals_temp)
+
+
+## wing chord explains land use (sugarEstate) occupancy response; linear and quadratic forms
+## minuscul quadratic effect of wind_chord on response to sugarEstate
+wing_chord_slopes_sugarEstate <- vector()
+wing_chord_quad_slopes_sugarEstate <- vector()
+for(i in 1:dim(sugarEstate.post)[1]) {
+  wing_chord_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
+  wing_chord_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,4]
+}
+meanAndCRI(wing_chord_slopes_sugarEstate)
+meanAndCRI(wing_chord_quad_slopes_sugarEstate)
+meanAndCRI(pvals_temp)
+
+## mass explains land use (sugarEstate) occupancy response; linear and quadratic forms
+## Miniscule quadratic effect of mass on plantation effect size
+mass_slopes_sugarEstate <- vector()
+mass_quad_slopes_sugarEstate <- vector()
+for(i in 1:dim(sugarEstate.post)[1]) {
+  mass_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
+  mass_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
+  pvals_temp[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,4]
+}
+meanAndCRI(mass_slopes_sugarEstate)
+meanAndCRI(mass_quad_slopes_sugarEstate)
+meanAndCRI(pvals_temp)
+
+## wing loading proxy #(wing chord / mass)# explains land use (sugarEstate) occupancy response; linear and quadratic forms
+## Massive quadratic effect of pseudo wing chord on plantation effect size
+pseudo_load_slopes_sugarEstate <- vector()
+pseudo_load_quad_slopes_sugarEstate <- vector()
+for(i in 1:dim(sugarEstate.post)[1]) {
+  pseudo_load_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
+  pseudo_load_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
+  pvals_temp[i] <-summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,4]
+}
+meanAndCRI(pseudo_load_slopes_sugarEstate)
+meanAndCRI(pseudo_load_quad_slopes_sugarEstate)
+meanAndCRI(pvals_temp)
+
+
+
 ####-----------------------------------------------------------------------------------
 ###------------------------------------------------------------------------------------
 
