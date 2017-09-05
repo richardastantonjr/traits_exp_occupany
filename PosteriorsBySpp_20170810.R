@@ -518,8 +518,7 @@ for(j in 2:6){           ### corresponds to column numbers for each covariate
 #Fig 4: species-specific forest plots with multiple effect sizes
 ggplot(data = sppEfx, aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, 
-             aes(fill = factor(POSNEG))) +                     
+  geom_point(colour="gray20", shape=21, size = 4) +                     
   scale_fill_manual(values = c("gray50","orange","blue"))+
   geom_hline(aes(yintercept = 0))+
   ylab("Effect size (95% CRI)")+
