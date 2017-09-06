@@ -5,6 +5,18 @@ library(tidyverse)
 library(reshape2) 
 library(gridExtra)
 
+## functions
+#return mean and 95% CRI
+meanAndCRI <- function(x) {
+  c(mean <- mean(x),quantile(x,c(0.025, 0.975))) 
+}
+
+#return mean and 90% CRI
+meanAnd90CRI <- function(x) {
+  c(mean <- mean(x),quantile(x,c(0.05, 0.95))) 
+}
+
+
 ## load model output, organized as matrices named "Output1," "Output2," etc. and most covariate data
 load("./Occupancy_analysis_Swazi_birds_Bayesian20170807.RData")
 
@@ -143,15 +155,6 @@ sugarEstate.post$diet.nectar <- rowMeans(sugarEstate.post[,names(sugarEstate.pos
 
 
 ## create a data frame of effect sizes and CRIs for each species for plotting
-## function to return mean and 95% CRI
-meanAndCRI <- function(x) {
-  c(mean <- mean(x),quantile(x,c(0.025, 0.975))) 
-}
-
-meanAnd90CRI <- function(x) {
-  c(mean <- mean(x),quantile(x,c(0.05, 0.95))) 
-}
-
 ## species names
 Species <- levels(as.factor(Outputs_long$Species))
 
