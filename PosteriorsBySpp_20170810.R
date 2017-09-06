@@ -501,7 +501,7 @@ meanAnd90CRI(pseudo_load_slopes_homestead)
 meanAnd90CRI(pseudo_load_quad_slopes_homestead)
 
 ## wing chord explains land use (sugarEstate) occupancy response; linear and quadratic forms
-## minuscule quadratic effect of wind_chord on response to sugarEstate
+## minuscule quadratic effect of wing_chord on response to sugarEstate
 wing_chord_slopes_sugarEstate <- vector()
 wing_chord_quad_slopes_sugarEstate <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
