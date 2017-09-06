@@ -545,15 +545,13 @@ nest.summary$betaName <- factor(nest.summary$betaName,levels = c("Protected", "P
 diet.summary$betaName <- factor(diet.summary$betaName,levels = c("Protected", "Pasture", "Homestead","Plantation","Shrub cover"))
 
 #nest substrates
-nest.fig <- ggplot(data = nest.summary, aes(x = betaName, y = effect, group = nest)) +
+nest.fig <- ggplot(data = nest.summary[nest.summary$betaName != "Shrub cover", ], aes(x = betaName, y = effect, group = nest)) +
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
   geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(nest))) + 
-  scale_fill_manual(values = c("white", "yellow", "gray50", "blue"), name = "Nesting substrate")+
-  geom_hline(aes(yintercept = 0))+
-  ##annotation_custom(my_grob_a)+         ## appears to label panel "a"
+  scale_fill_manual(values = c("white", "yellow", "gray50", "blue"), name = "Nest substrates ")+
   ylab("Effect size (95% CRI)")+
   ylim(c(-15,15))+
-  scale_x_discrete(limits = rev(levels(nest.summary$betaName)))+
+  scale_x_discrete(limits = rev(levels(nest.summary$betaName)[1:4]))+
   coord_flip()+
   theme_bw()+
   theme(axis.title.x = element_blank(),
@@ -566,15 +564,15 @@ nest.fig <- ggplot(data = nest.summary, aes(x = betaName, y = effect, group = ne
         legend.text=element_text(size=9),legend.title=element_text(face="bold",size=10))
 
 
-diet.fig <- ggplot(data = diet.summary, aes(x = betaName, y = effect, group = diet)) + 
+diet.fig <- ggplot(data = diet.summary[diet.summary$betaName != "Shrub cover", ], aes(x = betaName, y = effect, group = diet)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
   geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(diet))) + 
   scale_fill_manual(values = c("white", "yellow", "gray50","blue","black"), name = "Diet")+
-  geom_hline(aes(yintercept = 0))+
-  #annotation_custom(my_grob_b)+
+  ## geom_hline(aes(yintercept = 0))+
+  ## annotation_custom(my_grob_b)+
   ylab("Effect size (95% CRI)")+
   ylim(c(-15,15))+
-  scale_x_discrete(limits = rev(levels(nest.summary$betaName)))+
+  scale_x_discrete(limits = rev(levels(nest.summary$betaName)[1:4]))+
   coord_flip()+
   theme_bw()+
   theme(axis.title.x = element_text(face="bold", vjust=0.3, size=11,colour = "black"),
@@ -586,25 +584,51 @@ diet.fig <- ggplot(data = diet.summary, aes(x = betaName, y = effect, group = di
         panel.grid.minor = element_blank(), 
         legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
 
-plot(nest.fig)
-plot(diet.fig)
+## Why is nectar effect missing?
+nest.fig2 <- ggplot(data = nest.summary[nest.summary$betaName == "Shrub cover", ], aes(x = betaName, y = effect, group = nest)) +
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
+  geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(nest))) + 
+  scale_fill_manual(values = c("white", "yellow", "gray50", "blue"), name = "Nest substrates ")+
+  geom_hline(aes(yintercept = 0))+
+  ylab("Effect size (95% CRI)")+
+  ylim(c(-1,1))+
+  scale_x_discrete(limits = rev(levels(nest.summary$betaName)[5]))+
+  coord_flip()+
+  theme_bw()+
+  theme(axis.title.x = element_blank(),
+        axis.text.x  = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_text(size=9,colour = "black",margin=unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.ticks.length=unit(-0.1, "cm"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        legend.text=element_text(size=9),legend.title=element_text(face="bold",size=10))
 
-#line up into a single figure
+## Why is nectar effect missing?
+diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", ], aes(x = betaName, y = effect, group = diet)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
+  geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(diet))) + 
+  scale_fill_manual(values = c("white", "yellow", "gray50","blue","black"), name = "Diet")+
+  geom_hline(aes(yintercept = 0))+
+  ## annotation_custom(my_grob_b)+
+  ylab("Effect size (95% CRI)")+
+  ylim(c(-1,1))+
+  scale_x_discrete(limits = rev(levels(nest.summary$betaName)[5]))+
+  coord_flip()+
+  theme_bw()+
+  theme(axis.title.x = element_text(face="bold", vjust=0.3, size=11,colour = "black"),
+        axis.text.x  = element_text(vjust = 0.5,size = 9,colour = "black",margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.title.y = element_blank(), 
+        axis.text.y  = element_text(size = 9, colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
+
+#line up plots in 1 or 2 figures
 grid.arrange(nest.fig, diet.fig, ncol = 1)
-#fig4 <- arrangeGrob(nest.fig, diet.fig, ncol = 1)
-
-#gB <- ggplotGrob(nest.fig)
-#gC <- ggplotGrob(diet.fig)
-
-#grid::grid.newpage()
-#fig4 <- grid::grid.draw(rbind(gB, gC))
-
-#ggsave(file = "diet_nest_efx.png", fig4,width = 5, height= 8, units="in",dpi = 900)
-#pdf("fig4.pdf", width=5, height=8)
-
-#dev.off()
-
-
+grid.arrange(nest.fig2, diet.fig2, ncol = 1)
+grid.arrange(nest.fig, nest.fig2,diet.fig,  diet.fig2, ncol = 2)  ## legend repreats needlessly
 
 ##--------------------------------------------------------------------
 ##                Plotting effects by mass / "wing loading"
