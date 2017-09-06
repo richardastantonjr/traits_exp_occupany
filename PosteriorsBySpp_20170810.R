@@ -562,6 +562,11 @@ for(j in 2:6){           ### corresponds to column numbers for each covariate
   abline(v = quantile(Outputs_long[,j], probs = 0.975), col= "blue" )
 }
 
+for(j in 2:6){           ### corresponds to column numbers for each covariate
+  plot(density(Outputs_long[,j])) 
+  abline(v = quantile(Outputs_long[,j], probs = 0.05), col = "green" )
+  abline(v = quantile(Outputs_long[,j], probs = 0.95), col= "green" )
+}
 
 #some graph code from Isabel's paper
 #Fig 4: species-specific forest plots with multiple effect sizes
