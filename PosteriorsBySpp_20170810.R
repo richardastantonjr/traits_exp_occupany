@@ -571,16 +571,15 @@ for(j in 2:6){
 }
 
 #some graph code from Isabel's paper
-#Fig 4: species-specific forest plots with multiple effect sizes
-ggplot(data = sppEfx, aes(x = Species, y = effect)) + 
+#Fig 4: species-specific forest plots with multiple effect sizes, categorical variables (land use)
+ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 4) +                     
   #geom_hline(aes(yintercept = 0))+                ### keep zero line???
   ylab("Effect size (95% CRI)")+
   scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
   coord_flip()+
-  #facet_wrap(~betaName, ncol = 5)+     ## modify to change column order
-  facet_wrap(~betaName, scales = "free_x", ncol = 5)+ 
+  facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.text.x  = element_text(vjust = 0.5,size = 10,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
@@ -593,6 +592,26 @@ ggplot(data = sppEfx, aes(x = Species, y = effect)) +
         panel.grid.minor = element_blank(), 
         legend.position = "none")
 
+## forest plot of shrub cover effects
+ggplot(data = sppEfx[1:48,], aes(x = Species, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 4) +                     
+  geom_hline(aes(yintercept = 0))+                ### keep zero line???
+  ylab("Effect size (95% CRI)")+
+  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  coord_flip()+
+  facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
+  theme_bw()+
+  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.text.x  = element_text(vjust = 0.5,size = 10,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
 
 #nesting substrate and diet fig
 #nest effect
