@@ -555,6 +555,7 @@ meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
 ##
 ###-----------------------------------------------------------------------------------
 
+## community wide effects, 95% CRIs
 par(mfrow = c(2,3))
 for(j in 2:6){           ### corresponds to column numbers for each covariate
   plot(density(Outputs_long[,j])) 
@@ -562,7 +563,8 @@ for(j in 2:6){           ### corresponds to column numbers for each covariate
   abline(v = quantile(Outputs_long[,j], probs = 0.975), col= "blue" )
 }
 
-for(j in 2:6){           ### corresponds to column numbers for each covariate
+## community wide effects, 90% CRIs
+for(j in 2:6){           
   plot(density(Outputs_long[,j])) 
   abline(v = quantile(Outputs_long[,j], probs = 0.05), col = "green" )
   abline(v = quantile(Outputs_long[,j], probs = 0.95), col= "green" )
