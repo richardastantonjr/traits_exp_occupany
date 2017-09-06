@@ -148,6 +148,10 @@ meanAndCRI <- function(x) {
   c(mean <- mean(x),quantile(x,c(0.025, 0.975))) 
 }
 
+meanAnd90CRI <- function(x) {
+  c(mean <- mean(x),quantile(x,c(0.05, 0.95))) 
+}
+
 ## species names
 Species <- levels(as.factor(Outputs_long$Species))
 
@@ -645,19 +649,11 @@ home_mass <- merge(sppEfx, TraitData) %>%
 plant_mass <- merge(sppEfx, TraitData) %>% 
   filter(betaName == "Plantation")
 
-#Regress each beta on mass?
-summary(m1<-lm(effect~log(Mass), data = shrub_mass))
-summary(m2<-lm(effect~log(Mass), data = prot_mass))
-summary(m3<-lm(effect~log(Mass), data = past_mass))
-summary(m4<-lm(effect~log(Mass), data = home_mass))
-summary(m5<-lm(effect~log(Mass), data = plant_mass))
 
 ## Attempt to plot species responses in order of log(mass) and overlay best-fit lines
 mass.fig.shrub <- ggplot(data = shrub_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, 
-             aes(fill = factor(POSNEG))) +                     
-  scale_fill_manual(values = c("gray50","orange","blue"))+
+  geom_point(colour="gray20", shape=21, size = 4)+
   geom_abline(aes(intercept=0.07816,slope=0.01418), colour = "red", size = 2)+
   ylab("Effect size (95% CRI)")+
   theme_bw()+
@@ -675,9 +671,7 @@ mass.fig.shrub <- ggplot(data = shrub_mass, aes(x = log(Mass), y = effect)) +
 
 mass.fig.prot <- ggplot(data = prot_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, 
-             aes(fill = factor(POSNEG))) +                     
-  scale_fill_manual(values = c("gray50","orange","blue"))+
+  geom_point(colour="gray20", shape=21, size = 4)+
   geom_abline(aes(intercept= -3.1605, slope = 1.3869), colour = "red", size = 2)+
   ylab("Effect size (95% CRI)")+
   theme_bw()+
@@ -695,9 +689,7 @@ mass.fig.prot <- ggplot(data = prot_mass, aes(x = log(Mass), y = effect)) +
 
 mass.fig.past <- ggplot(data = past_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, 
-             aes(fill = factor(POSNEG))) +                     
-  scale_fill_manual(values = c("gray50","orange","blue"))+
+  geom_point(colour="gray20", shape=21, size = 4)+
   geom_abline(aes(intercept= 1.6228, slope = -0.9917), colour = "red", size = 2)+
   theme_bw()+
   theme(#axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
@@ -715,9 +707,7 @@ mass.fig.past <- ggplot(data = past_mass, aes(x = log(Mass), y = effect)) +
 
 mass.fig.home <- ggplot(data = home_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, 
-             aes(fill = factor(POSNEG))) +                     
-  scale_fill_manual(values = c("gray50","orange","blue"))+
+  geom_point(colour="gray20", shape=21, size = 4)+
   geom_abline(aes(intercept= -2.6681, slope = 0.4170), colour = "red", size = 2)+
   ylab("Effect size (95% CRI)")+
   theme_bw()+
@@ -734,9 +724,7 @@ mass.fig.home <- ggplot(data = home_mass, aes(x = log(Mass), y = effect)) +
 
 mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, 
-             aes(fill = factor(POSNEG))) +                     
-  scale_fill_manual(values = c("gray50","orange","blue"))+
+  geom_point(colour="gray20", shape=21, size = 4)+
   geom_abline(aes(intercept= -2.5434, slope = -0.8382), colour = "red", size = 2)+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
