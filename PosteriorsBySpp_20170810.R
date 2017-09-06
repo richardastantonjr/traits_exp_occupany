@@ -195,7 +195,7 @@ colnames(sugarSppEfx) <- c("Species", "effect", "LCL", "UCL")
 sugarSppEfx$betaName <- "Plantation"
 rownames(sugarSppEfx)<- NULL
 
-## bind rows to creat one frame for plotting
+## bind rows to create one frame for plotting
 sppEfx <- rbind.data.frame(shrubSppEfx, protectedSppEfx, pastureSppEfx, homesteadSppEfx, sugarSppEfx )
 
 ##-------------------------------------
@@ -324,6 +324,10 @@ meanAndCRI(wing_chord_slopes)
 meanAndCRI(wing_chord_quad_slopes)
 meanAndCRI(pvals_temp)
 
+## 90% CRI excludes 0
+meanAnd90CRI(wing_chord_slopes)
+meanAnd90CRI(wing_chord_quad_slopes)
+
 ## mass explains shrub cover occupancy response; linear and quadratic forms
 massSq <- TraitData$Mass * TraitData$Mass
 mass_slopes <- vector()
@@ -336,6 +340,10 @@ for(i in 1:dim(shrub.post)[1]) {
 meanAndCRI(mass_slopes)
 meanAndCRI(mass_quad_slopes)
 meanAndCRI(pvals_temp)
+
+## positive effect but effect is essentially 0
+meanAnd90CRI(mass_slopes)
+meanAnd90CRI(mass_quad_slopes)
 
 ## wing loading proxy #(wing chord / mass)# explains shrub cover occupancy response; linear and quadratic forms
 pseudo_load_Sq <- TraitData$pseudo_loading * TraitData$pseudo_loading
@@ -350,6 +358,8 @@ meanAndCRI(pseudo_load_slopes)
 meanAndCRI(pseudo_load_quad_slopes)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(pseudo_load_slopes)
+meanAnd90CRI(pseudo_load_quad_slopes)
 
 ## Land-use responses
 ##-----------------------------------------------------------------------------------------
@@ -366,6 +376,9 @@ meanAndCRI(wing_chord_slopes_protected)
 meanAndCRI(wing_chord_quad_slopes_protected)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(wing_chord_slopes_protected)
+meanAnd90CRI(wing_chord_quad_slopes_protected)
+
 ## mass explains land use (protection) occupancy response; linear and quadratic forms
 mass_slopes_protected <- vector()
 mass_quad_slopes_protected <- vector()
@@ -377,6 +390,10 @@ for(i in 1:dim(protected.post)[1]) {
 meanAndCRI(mass_slopes_protected)
 meanAndCRI(mass_quad_slopes_protected)
 meanAndCRI(pvals_temp)
+
+## at 90%, mass has a positive effect
+meanAnd90CRI(mass_slopes_protected)
+meanAnd90CRI(mass_quad_slopes_protected)
 
 ## wing loading proxy #(wing chord / mass)# explains land use (protection) occupancy response; linear and quadratic forms
 pseudo_load_slopes_protected <- vector()
@@ -390,6 +407,8 @@ meanAndCRI(pseudo_load_slopes_protected)
 meanAndCRI(pseudo_load_quad_slopes_protected)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(pseudo_load_slopes_protected)
+meanAnd90CRI(pseudo_load_quad_slopes_protected)
 
 ## wing chord explains land use (pasture) occupancy response; linear and quadratic forms
 wing_chord_slopes_pasture <- vector()
@@ -403,6 +422,9 @@ meanAndCRI(wing_chord_slopes_pasture)
 meanAndCRI(wing_chord_quad_slopes_pasture)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(wing_chord_slopes_pasture)
+meanAnd90CRI(wing_chord_quad_slopes_pasture)
+
 ## mass explains land use (pasture) occupancy response; linear and quadratic forms
 mass_slopes_pasture <- vector()
 mass_quad_slopes_pasture <- vector()
@@ -414,6 +436,9 @@ for(i in 1:dim(pasture.post)[1]) {
 meanAndCRI(mass_slopes_pasture)
 meanAndCRI(mass_quad_slopes_pasture)
 meanAndCRI(pvals_temp)
+
+meanAnd90CRI(mass_slopes_pasture)
+meanAnd90CRI(mass_quad_slopes_pasture)
 
 ## wing loading proxy #(wing chord / mass)# explains land use (pasture) occupancy response; linear and quadratic forms
 pseudo_load_slopes_pasture <- vector()
@@ -427,6 +452,8 @@ meanAndCRI(pseudo_load_slopes_pasture)
 meanAndCRI(pseudo_load_quad_slopes_pasture)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(pseudo_load_slopes_pasture)
+meanAnd90CRI(pseudo_load_quad_slopes_pasture)
 
 ## wing chord explains land use (homestead) occupancy response; linear and quadratic forms
 wing_chord_slopes_homestead <- vector()
@@ -440,6 +467,9 @@ meanAndCRI(wing_chord_slopes_homestead)
 meanAndCRI(wing_chord_quad_slopes_homestead)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(wing_chord_slopes_homestead)
+meanAnd90CRI(wing_chord_quad_slopes_homestead)
+
 ## mass explains land use (homestead) occupancy response; linear and quadratic forms
 mass_slopes_homestead <- vector()
 mass_quad_slopes_homestead <- vector()
@@ -451,6 +481,9 @@ for(i in 1:dim(homestead.post)[1]) {
 meanAndCRI(mass_slopes_homestead)
 meanAndCRI(mass_quad_slopes_homestead)
 meanAndCRI(pvals_temp)
+
+meanAnd90CRI(mass_slopes_homestead)
+meanAnd90CRI(mass_quad_slopes_homestead)
 
 ## wing loading proxy #(wing chord / mass)# explains land use (homestead) occupancy response; linear and quadratic forms
 pseudo_load_slopes_homestead <- vector()
@@ -464,9 +497,11 @@ meanAndCRI(pseudo_load_slopes_homestead)
 meanAndCRI(pseudo_load_quad_slopes_homestead)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(pseudo_load_slopes_homestead)
+meanAnd90CRI(pseudo_load_quad_slopes_homestead)
 
 ## wing chord explains land use (sugarEstate) occupancy response; linear and quadratic forms
-## minuscul quadratic effect of wind_chord on response to sugarEstate
+## minuscule quadratic effect of wind_chord on response to sugarEstate
 wing_chord_slopes_sugarEstate <- vector()
 wing_chord_quad_slopes_sugarEstate <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
@@ -477,6 +512,9 @@ for(i in 1:dim(sugarEstate.post)[1]) {
 meanAndCRI(wing_chord_slopes_sugarEstate)
 meanAndCRI(wing_chord_quad_slopes_sugarEstate)
 meanAndCRI(pvals_temp)
+
+meanAnd90CRI(wing_chord_slopes_sugarEstate)
+meanAnd90CRI(wing_chord_quad_slopes_sugarEstate)
 
 ## mass explains land use (sugarEstate) occupancy response; linear and quadratic forms
 ## Miniscule quadratic effect of mass on plantation effect size
@@ -491,6 +529,9 @@ meanAndCRI(mass_slopes_sugarEstate)
 meanAndCRI(mass_quad_slopes_sugarEstate)
 meanAndCRI(pvals_temp)
 
+meanAnd90CRI(mass_slopes_sugarEstate)
+meanAnd90CRI(mass_quad_slopes_sugarEstate)
+
 ## wing loading proxy #(wing chord / mass)# explains land use (sugarEstate) occupancy response; linear and quadratic forms
 ## Massive quadratic effect of pseudo wing chord on plantation effect size
 pseudo_load_slopes_sugarEstate <- vector()
@@ -504,7 +545,8 @@ meanAndCRI(pseudo_load_slopes_sugarEstate)
 meanAndCRI(pseudo_load_quad_slopes_sugarEstate)
 meanAndCRI(pvals_temp)
 
-
+meanAnd90CRI(pseudo_load_slopes_sugarEstate)
+meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
 
 ####-----------------------------------------------------------------------------------
 ###------------------------------------------------------------------------------------
