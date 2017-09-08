@@ -666,7 +666,7 @@ nest.fig2 <- ggplot(data = nest.summary[nest.summary$betaName == "Shrub cover", 
   scale_fill_manual(values = c("white", "yellow", "gray50", "blue"), name = "Nest substrates ")+
   geom_hline(aes(yintercept = 0))+
   ylab("Effect size (95% CRI)")+
-  ylim(c(-1,1))+
+  ylim(c(-0.25,1))+
   scale_x_discrete(limits = rev(levels(nest.summary$betaName)[5]))+
   coord_flip()+
   theme_bw()+
@@ -687,7 +687,7 @@ diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", 
   geom_hline(aes(yintercept = 0))+
   ## annotation_custom(my_grob_b)+
   ylab("Effect size (95% CRI)")+
-  ylim(c(-1,1))+
+  ylim(c(-0.25,1))+
   scale_x_discrete(limits = rev(levels(nest.summary$betaName)[5]))+
   coord_flip()+
   theme_bw()+
