@@ -16,6 +16,10 @@ meanAnd90CRI <- function(x) {
   c(mean <- mean(x),quantile(x,c(0.05, 0.95))) 
 }
 
+## take the anti-logit of a value; appears to be equivalent to plogis in base with default location and scale parameters.
+anti_logit <- function(x){
+  exp(x)/(1+exp(x))
+}
 
 ## load model output, organized as matrices named "Output1," "Output2," etc. and most covariate data
 load("./Occupancy_analysis_Swazi_birds_Bayesian20170807.RData")
@@ -303,6 +307,9 @@ nest.summary <- rbind.data.frame(shrub.post.nest, protected.post.nest, pasture.p
 diet.summary <- rbind.data.frame(shrub.post.diet, protected.post.diet, pasture.post.diet ,homestead.post.diet,
                                  sugarEstate.post.diet, stringsAsFactors = FALSE)
 
+### nest.summary and diet summary betas and CRIS replaced with anti-logit transforms
+nest.summary[,1:3] <- anti_logit(nest.summary[,1:3])
+diet.summary[,1:3] <- anti_logit(diet.summary[,1:3])
 
 #### Assess effects of continuous covariates using a regression approach
 #### Fit a linear model to each row, where rows are posterior samples of a covariate's value and each
@@ -622,7 +629,7 @@ diet.summary$betaName <- factor(diet.summary$betaName,levels = c("Protected", "P
 #nest substrates
 nest.fig <- ggplot(data = nest.summary[nest.summary$betaName != "Shrub cover", ], aes(x = betaName, y = effect, group = nest)) +
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
-  geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(nest))) + 
+  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, aes(fill = factor(nest))) + 
   scale_fill_manual(values = c("white", "yellow", "gray50", "blue"), name = "Nest substrates ")+
   ylab("Effect size (95% CRI)")+
   ylim(c(-15,15))+
@@ -641,7 +648,7 @@ nest.fig <- ggplot(data = nest.summary[nest.summary$betaName != "Shrub cover", ]
 
 diet.fig <- ggplot(data = diet.summary[diet.summary$betaName != "Shrub cover", ], aes(x = betaName, y = effect, group = diet)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
-  geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(diet))) + 
+  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, aes(fill = factor(diet))) + 
   scale_fill_manual(values = c("white", "yellow", "gray50","blue","black"), name = "Diet")+
   ## annotation_custom(my_grob_b)+
   ylab("Effect size (95% CRI)")+
@@ -701,7 +708,7 @@ diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", 
 #line up plots in 1 or 2 figures
 grid.arrange(nest.fig, diet.fig, ncol = 1)
 grid.arrange(nest.fig2, diet.fig2, ncol = 1)
-grid.arrange(nest.fig, nest.fig2,diet.fig,  diet.fig2, ncol = 2)  ## legend repreats needlessly
+grid.arrange(nest.fig, nest.fig2,diet.fig,  diet.fig2, ncol = 2)  ## legend repeats needlessly
 
 ##--------------------------------------------------------------------
 ##                Plotting effects by mass / "wing loading"
