@@ -643,7 +643,6 @@ diet.fig <- ggplot(data = diet.summary[diet.summary$betaName != "Shrub cover", ]
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
   geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(diet))) + 
   scale_fill_manual(values = c("white", "yellow", "gray50","blue","black"), name = "Diet")+
-  ## geom_hline(aes(yintercept = 0))+
   ## annotation_custom(my_grob_b)+
   ylab("Effect size (95% CRI)")+
   ylim(c(-15,15))+
@@ -659,14 +658,14 @@ diet.fig <- ggplot(data = diet.summary[diet.summary$betaName != "Shrub cover", ]
         panel.grid.minor = element_blank(), 
         legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
 
-## Why is nectar effect missing?
+
 nest.fig2 <- ggplot(data = nest.summary[nest.summary$betaName == "Shrub cover", ], aes(x = betaName, y = effect, group = nest)) +
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
-  geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(nest))) + 
+  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, aes(fill = factor(nest))) + 
   scale_fill_manual(values = c("white", "yellow", "gray50", "blue"), name = "Nest substrates ")+
   geom_hline(aes(yintercept = 0))+
   ylab("Effect size (95% CRI)")+
-  ylim(c(-0.25,1))+
+  ylim(c(-0.25,5))+
   scale_x_discrete(limits = rev(levels(nest.summary$betaName)[5]))+
   coord_flip()+
   theme_bw()+
@@ -679,15 +678,14 @@ nest.fig2 <- ggplot(data = nest.summary[nest.summary$betaName == "Shrub cover", 
         panel.grid.minor = element_blank(), 
         legend.text=element_text(size=9),legend.title=element_text(face="bold",size=10))
 
-## Why is nectar effect missing?
 diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", ], aes(x = betaName, y = effect, group = diet)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
-  geom_point(colour = "gray20", shape = 21, size = 2, position = pd, aes(fill = factor(diet))) + 
+  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, aes(fill = factor(diet))) + 
   scale_fill_manual(values = c("white", "yellow", "gray50","blue","black"), name = "Diet")+
   geom_hline(aes(yintercept = 0))+
   ## annotation_custom(my_grob_b)+
   ylab("Effect size (95% CRI)")+
-  ylim(c(-0.25,1))+
+  ylim(c(-0.25,5))+
   scale_x_discrete(limits = rev(levels(nest.summary$betaName)[5]))+
   coord_flip()+
   theme_bw()+
