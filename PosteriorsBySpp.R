@@ -634,11 +634,10 @@ nest.fig <- ggplot(data = nest.summary[nest.summary$betaName != "Shrub cover", ]
   ylab("Probability of occurrence (95% CRI)")+
   ylim(c(0,1))+
   scale_x_discrete(limits = levels(nest.summary$betaName)[1:4])+
-  #coord_flip()+
   theme_bw()+
   theme(axis.title.x = element_blank(),
-        axis.text.x  = element_text(size = 12,colour = "black"),
-        axis.title.y = element_text(size = 15,colour = "black"), 
+        axis.text.x  = element_blank(), #element_text(size = 12,colour = "black"),
+        axis.title.y = element_blank(), #element_text(size = 15,colour = "black"), 
         axis.text.y  = element_text(size = 9,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
         axis.ticks.length=unit(-0.1, "cm"),
         panel.grid.major = element_blank(), 
@@ -652,36 +651,15 @@ diet.fig <- ggplot(data = diet.summary[diet.summary$betaName != "Shrub cover", ]
   ylab("Probability of occurrence (95% CRI)")+
   ylim(c(0,1))+
   scale_x_discrete(limits = levels(diet.summary$betaName)[1:4])+
-  #coord_flip()+
   theme_bw()+
   theme(axis.title.x = element_blank(),
         axis.text.x  = element_text(size = 12,colour = "black"),
-        axis.title.y = element_text(size = 15,colour = "black"), 
+        axis.title.y = element_blank(), #element_text(size = 15,colour = "black"), 
         axis.text.y  = element_text(size = 9,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
         axis.ticks.length=unit(-0.1, "cm"),
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(), 
         legend.text=element_text(size=9),legend.title=element_text(face="bold",size=10))
-
-
-diet.fig <- ggplot(data = diet.summary[diet.summary$betaName != "Shrub cover", ], aes(x = betaName, y = effect, group = diet)) + 
-  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
-  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, aes(fill = factor(diet))) + 
-  scale_fill_manual(values = c("white", "yellow", "gray50","blue","black"), name = "Diet")+
-  ylab("Probability of occurrence (95% CRI)")+
-  ylim(c(0,1))+
-  scale_x_discrete(limits = rev(levels(nest.summary$betaName)[1:4]))+
-  coord_flip()+
-  theme_bw()+
-  theme(axis.title.x = element_text(face="bold", vjust=0.3, size=11,colour = "black"),
-        axis.text.x  = element_text(vjust = 0.5,size = 9,colour = "black",margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
-        axis.title.y = element_blank(), 
-        axis.text.y  = element_text(size = 9, colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
-        axis.ticks.length = unit(-0.15, "cm"),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(), 
-        legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
-
 
 nest.fig2 <- ggplot(data = nest.summary[nest.summary$betaName == "Shrub cover", ], aes(x = betaName, y = effect, group = nest)) +
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
@@ -722,7 +700,7 @@ diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", 
         legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
 
 #line up plots in 1 or 2 figures
-grid.arrange(nest.fig, diet.fig, ncol = 1)
+grid.arrange(nest.fig, diet.fig, ncol = 1, left = "Probability of occurrence (95% CRI)")
 grid.arrange(nest.fig2, diet.fig2, ncol = 1)
 grid.arrange(nest.fig, nest.fig2,diet.fig,  diet.fig2, ncol = 2)  ## legend repeats needlessly
 
