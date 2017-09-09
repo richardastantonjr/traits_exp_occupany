@@ -618,7 +618,7 @@ ggplot(data = sppEfx_anti_logit[49:240,], aes(x = Species, y = effect)) +
 ## forest plot of shrub cover effects
 ggplot(data = sppEfx[1:48,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, aes(fill = "gray20")) +   
+  geom_point(colour="gray20", shape=21, size = 4, fill = "salmon") +   
   geom_hline(aes(yintercept = 0))+
   ylab("Effect size (95% CRI)")+
   scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
@@ -638,7 +638,7 @@ ggplot(data = sppEfx[1:48,], aes(x = Species, y = effect)) +
 
 ggplot(data = sppEfx_anti_logit[1:48,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, aes(fill = "gray20")) +                     
+  geom_point(colour="gray20", shape=21, size = 4, fill = "salmon") +                     
   ylab("Probability of occurrence (95% CRI)")+
   ylim(c(0,1))+
   scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
@@ -752,12 +752,10 @@ home_mass <- merge(sppEfx, TraitData) %>%
 plant_mass <- merge(sppEfx, TraitData) %>% 
   filter(betaName == "Plantation")
 
-
 ## Attempt to plot species responses in order of log(mass) and overlay best-fit lines
 mass.fig.shrub <- ggplot(data = shrub_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4)+
-  geom_abline(aes(intercept=0.07816,slope=0.01418), colour = "red", size = 2)+
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
   ylab("Effect size (95% CRI)")+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
@@ -771,15 +769,14 @@ mass.fig.shrub <- ggplot(data = shrub_mass, aes(x = log(Mass), y = effect)) +
         panel.grid.minor = element_blank(), 
         legend.position = "none")
 
-
+## intercepts are incorrect
 mass.fig.prot <- ggplot(data = prot_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4)+
-  geom_abline(aes(intercept= -3.1605, slope = 1.3869), colour = "red", size = 2)+
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  #geom_abline(aes(intercept= 0.5, slope = 0.04), colour = "salmon", size = 1)+
   ylab("Effect size (95% CRI)")+
   theme_bw()+
-  theme(#axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
-        axis.title.x = element_blank(),
+  theme(axis.title.x = element_blank(),
         axis.text.x  = element_blank(),
         axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
@@ -792,11 +789,9 @@ mass.fig.prot <- ggplot(data = prot_mass, aes(x = log(Mass), y = effect)) +
 
 mass.fig.past <- ggplot(data = past_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4)+
-  geom_abline(aes(intercept= 1.6228, slope = -0.9917), colour = "red", size = 2)+
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
   theme_bw()+
-  theme(#axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
-    axis.title.x = element_blank(),
+  theme(axis.title.x = element_blank(),
     axis.text.x  = element_blank(),
     axis.title.y = element_blank(),
     axis.text.y  = element_blank(),
@@ -810,8 +805,7 @@ mass.fig.past <- ggplot(data = past_mass, aes(x = log(Mass), y = effect)) +
 
 mass.fig.home <- ggplot(data = home_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4)+
-  geom_abline(aes(intercept= -2.6681, slope = 0.4170), colour = "red", size = 2)+
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
   ylab("Effect size (95% CRI)")+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
@@ -824,11 +818,11 @@ mass.fig.home <- ggplot(data = home_mass, aes(x = log(Mass), y = effect)) +
     panel.grid.minor = element_blank(), 
     legend.position = "none")
 
-
+## intercept is incorrect
 mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4)+
-  geom_abline(aes(intercept= -2.5434, slope = -0.8382), colour = "red", size = 2)+
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  #geom_abline(aes(intercept= -2.5434, slope = 0.019), colour = "salmon", size = 1)+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
     axis.title.y = element_blank(),
@@ -845,72 +839,103 @@ grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2)
 
 
 
-## Plotting code to delete
-## Dirty plots of continuous effects, body size and "wing loading"
-##-----------------------------------------------------------------------------------
-## view mass/wing chord plotted against mean betas; only the shrub effect is a priori
-shrubEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Shrub cover")
-protEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Protected")
-pastEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Pasture")
-homeEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Homestead")
-sugarEfxAndTraits <- merge(sppEfx, TraitData) %>% 
-  filter(betaName == "Plantation")
 
-## full posterior samples
-par(mfrow = c(2,3))
-summary(lm(Outputs_long$beta1~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$beta1 )
-abline(m1<-lm(Outputs_long$beta1~Outputs_long$pseudo_loading))
 
-summary(lm(Outputs_long$`beta.l[1]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[1]` )
-abline(m1<-lm(Outputs_long$`beta.l[1]`~Outputs_long$pseudo_loading))
+##----------------------------------------------------------
+## Pseudo wing loading
 
-summary(lm(Outputs_long$`beta.l[2]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[2]` )
-abline(m1<-lm(Outputs_long$`beta.l[2]`~Outputs_long$pseudo_loading))
+## Attempt to plot species responses in order of pseudo_loading and overlay best-fit lines
+pseudo.fig.shrub <- ggplot(data = shrub_mass, aes(x = pseudo_loading, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  ylab("Effect size (95% CRI)")+
+  theme_bw()+
+  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.text.x  = element_text(vjust = 0.5,size = 10,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
 
-summary(lm(Outputs_long$`beta.l[3]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[3]`)
-abline(m1<-lm(Outputs_long$`beta.l[3]`~Outputs_long$pseudo_loading))
+pseudo.fig.prot <- ggplot(data = prot_mass, aes(x = pseudo_loading, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  ylab("Effect size (95% CRI)")+
+  theme_bw()+
+  theme(axis.title.x = element_blank(),
+        axis.text.x  = element_blank(),
+        axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
 
-summary(lm(Outputs_long$`beta.l[4]`~Outputs_long$pseudo_loading))
-plot(Outputs_long$pseudo_loading,Outputs_long$`beta.l[4]`)
-abline(m1<-lm(Outputs_long$`beta.l[4]`~Outputs_long$pseudo_loading))
+pseudo.fig.past <- ggplot(data = past_mass, aes(x = pseudo_loading, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  theme_bw()+
+  theme(axis.title.x = element_blank(),
+        axis.text.x  = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_blank(),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
 
-##----------------------------- MEANS ONLY
-plot(protEfxAndTraits$pseudo_loading, protEfxAndTraits$effect)  
-summary(lm(protEfxAndTraits$effect~protEfxAndTraits$pseudo_loading))
 
-plot(pastEfxAndTraits$pseudo_loading, pastEfxAndTraits$effect)  
-summary(lm(pastEfxAndTraits$effect~pastEfxAndTraits$pseudo_loading))
+pseudo.fig.home <- ggplot(data = home_mass, aes(x = pseudo_loading, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  ylab("Effect size (95% CRI)")+
+  theme_bw()+
+  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
 
-plot(homeEfxAndTraits$pseudo_loading, homeEfxAndTraits$effect)  
-summary(lm(homeEfxAndTraits$effect~homeEfxAndTraits$pseudo_loading))
+## intercept is incorrect
+pseudo.fig.plant <- ggplot(data = plant_mass, aes(x = pseudo_loading, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  theme_bw()+
+  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_blank(),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
 
-plot(sugarEfxAndTraits$pseudo_loading, sugarEfxAndTraits$effect)  
-summary(lm(sugarEfxAndTraits$effect~sugarEfxAndTraits$pseudo_loading))
+grid.arrange(pseudo.fig.shrub, ncol = 1)
+grid.arrange(pseudo.fig.prot, pseudo.fig.past, pseudo.fig.home, pseudo.fig.plant, ncol = 2)
 
-plot(shrubEfxAndTraits$pseudo_loading, shrubEfxAndTraits$effect)  
-summary(lm(shrubEfxAndTraits$effect~shrubEfxAndTraits$pseudo_loading))
-##-----------------------------------------------------------------------------------
-## view mass plotted against betas
-plot(log(shrubEfxAndTraits$Mass), shrubEfxAndTraits$effect)  
-summary(lm(shrubEfxAndTraits$effect~log(shrubEfxAndTraits$Mass)))
 
-plot(log(protEfxAndTraits$Mass), protEfxAndTraits$effect)        
-summary(lm(protEfxAndTraits$effect~log(protEfxAndTraits$Mass)))
 
-plot(log(pastEfxAndTraits$Mass), pastEfxAndTraits$effect)  
-summary(lm(pastEfxAndTraits$effect~log(pastEfxAndTraits$Mass)))
-
-plot(log(homeEfxAndTraits$Mass), homeEfxAndTraits$effect)  
-summary(lm(homeEfxAndTraits$effect~log(homeEfxAndTraits$Mass)))
-
-plot(log(sugarEfxAndTraits$Mass), sugarEfxAndTraits$effect)  
-summary(lm(sugarEfxAndTraits$effect~log(sugarEfxAndTraits$Mass)))
-
+#if probability scale is desired
+#shrub_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
+#  filter(betaName == "Shrub cover")
+#prot_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
+#  filter(betaName == "Protected")
+#past_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
+#  filter(betaName == "Pasture")
+#home_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
+#  filter(betaName == "Homestead")
+#plant_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
+#  filter(betaName == "Plantation")
