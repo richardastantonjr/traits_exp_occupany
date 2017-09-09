@@ -1,6 +1,5 @@
 
 ## libraries
-#library(plotrix)
 library(tidyverse)
 library(reshape2) 
 library(gridExtra)
@@ -60,7 +59,7 @@ Outputs_long$Species <- sppName
 Outputs_long$X <- rep(1:dim(Outputs[[1]])[1],48)   ## add a row number for dcast to convert long to wide format
 
 ## remove extraneous material
-rm(list=ls()[! ls() %in% c("Outputs_long","TraitData")])
+rm(list=ls()[! ls() %in% c("Outputs_long","TraitData", "meanAndCRI", "meanAnd90CRI", "anti_logit")])
 ##----------------------------------------------------------------------------------
 ## summarize results for the community of common species
 pooledBetas <- colMeans(Outputs_long[1:5])  
@@ -94,7 +93,7 @@ Outputs_long <-merge(Outputs_long, TraitData)
 shrub.post<-subset(Outputs_long, select=c("X", "Species","beta1"))
 homestead.post<-subset(Outputs_long, select=c("X", "Species","beta.l[1]"))
 pasture.post<-subset(Outputs_long, select=c("X", "Species","beta.l[2]"))
-pasture.post<-subset(Outputs_long, select=c("X", "Species","beta.l[3]"))
+protected.post<-subset(Outputs_long, select=c("X", "Species","beta.l[3]"))
 sugarEstate.post<-subset(Outputs_long, select=c("X", "Species","beta.l[4]"))
 
 #reformat to make species columns and posterior samples rows with dcast
@@ -204,6 +203,8 @@ rownames(sugarSppEfx)<- NULL
 
 ## bind rows to create one frame for plotting
 sppEfx <- rbind.data.frame(shrubSppEfx, protectedSppEfx, pastureSppEfx, homesteadSppEfx, sugarSppEfx )
+sppEfx_anti_logit <- sppEfx
+sppEfx_anti_logit[,2:4] <- anti_logit(sppEfx_anti_logit[,2:4])
 
 ##-------------------------------------
 ## build data frames with nest and diet summary effects for plotting
@@ -332,7 +333,7 @@ for(i in 1:dim(shrub.post)[1]) {
   }
 meanAndCRI(wing_chord_slopes)
 meanAndCRI(wing_chord_quad_slopes)
-meanAndCRI(pvals_temp)
+
 
 ## 90% CRI excludes 0
 meanAnd90CRI(wing_chord_slopes)
@@ -349,7 +350,7 @@ for(i in 1:dim(shrub.post)[1]) {
   }
 meanAndCRI(mass_slopes)
 meanAndCRI(mass_quad_slopes)
-meanAndCRI(pvals_temp)
+
 
 ## positive effect but effect is essentially 0
 meanAnd90CRI(mass_slopes)
@@ -366,7 +367,7 @@ for(i in 1:dim(shrub.post)[1]) {
   }
 meanAndCRI(pseudo_load_slopes)
 meanAndCRI(pseudo_load_quad_slopes)
-meanAndCRI(pvals_temp)
+
 
 meanAnd90CRI(pseudo_load_slopes)
 meanAnd90CRI(pseudo_load_quad_slopes)
@@ -384,7 +385,7 @@ for(i in 1:dim(protected.post)[1]) {
 }
 meanAndCRI(wing_chord_slopes_protected)
 meanAndCRI(wing_chord_quad_slopes_protected)
-meanAndCRI(pvals_temp)
+
 
 meanAnd90CRI(wing_chord_slopes_protected)
 meanAnd90CRI(wing_chord_quad_slopes_protected)
@@ -399,7 +400,7 @@ for(i in 1:dim(protected.post)[1]) {
 }
 meanAndCRI(mass_slopes_protected)
 meanAndCRI(mass_quad_slopes_protected)
-meanAndCRI(pvals_temp)
+
 
 ## at 90%, mass has a positive effect
 meanAnd90CRI(mass_slopes_protected)
@@ -415,7 +416,7 @@ for(i in 1:dim(protected.post)[1]) {
 }
 meanAndCRI(pseudo_load_slopes_protected)
 meanAndCRI(pseudo_load_quad_slopes_protected)
-meanAndCRI(pvals_temp)
+
 
 meanAnd90CRI(pseudo_load_slopes_protected)
 meanAnd90CRI(pseudo_load_quad_slopes_protected)
@@ -430,7 +431,7 @@ for(i in 1:dim(pasture.post)[1]) {
 }
 meanAndCRI(wing_chord_slopes_pasture)
 meanAndCRI(wing_chord_quad_slopes_pasture)
-meanAndCRI(pvals_temp)
+
 
 meanAnd90CRI(wing_chord_slopes_pasture)
 meanAnd90CRI(wing_chord_quad_slopes_pasture)
@@ -445,7 +446,6 @@ for(i in 1:dim(pasture.post)[1]) {
 }
 meanAndCRI(mass_slopes_pasture)
 meanAndCRI(mass_quad_slopes_pasture)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(mass_slopes_pasture)
 meanAnd90CRI(mass_quad_slopes_pasture)
@@ -460,7 +460,6 @@ for(i in 1:dim(pasture.post)[1]) {
 }
 meanAndCRI(pseudo_load_slopes_pasture)
 meanAndCRI(pseudo_load_quad_slopes_pasture)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(pseudo_load_slopes_pasture)
 meanAnd90CRI(pseudo_load_quad_slopes_pasture)
@@ -475,7 +474,7 @@ for(i in 1:dim(homestead.post)[1]) {
 }
 meanAndCRI(wing_chord_slopes_homestead)
 meanAndCRI(wing_chord_quad_slopes_homestead)
-meanAndCRI(pvals_temp)
+
 
 meanAnd90CRI(wing_chord_slopes_homestead)
 meanAnd90CRI(wing_chord_quad_slopes_homestead)
@@ -490,7 +489,6 @@ for(i in 1:dim(homestead.post)[1]) {
 }
 meanAndCRI(mass_slopes_homestead)
 meanAndCRI(mass_quad_slopes_homestead)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(mass_slopes_homestead)
 meanAnd90CRI(mass_quad_slopes_homestead)
@@ -505,7 +503,6 @@ for(i in 1:dim(homestead.post)[1]) {
 }
 meanAndCRI(pseudo_load_slopes_homestead)
 meanAndCRI(pseudo_load_quad_slopes_homestead)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(pseudo_load_slopes_homestead)
 meanAnd90CRI(pseudo_load_quad_slopes_homestead)
@@ -521,7 +518,6 @@ for(i in 1:dim(sugarEstate.post)[1]) {
 }
 meanAndCRI(wing_chord_slopes_sugarEstate)
 meanAndCRI(wing_chord_quad_slopes_sugarEstate)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(wing_chord_slopes_sugarEstate)
 meanAnd90CRI(wing_chord_quad_slopes_sugarEstate)
@@ -537,7 +533,6 @@ for(i in 1:dim(sugarEstate.post)[1]) {
 }
 meanAndCRI(mass_slopes_sugarEstate)
 meanAndCRI(mass_quad_slopes_sugarEstate)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(mass_slopes_sugarEstate)
 meanAnd90CRI(mass_quad_slopes_sugarEstate)
@@ -553,7 +548,6 @@ for(i in 1:dim(sugarEstate.post)[1]) {
 }
 meanAndCRI(pseudo_load_slopes_sugarEstate)
 meanAndCRI(pseudo_load_quad_slopes_sugarEstate)
-meanAndCRI(pvals_temp)
 
 meanAnd90CRI(pseudo_load_slopes_sugarEstate)
 meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
@@ -584,10 +578,29 @@ for(j in 2:6){
 #Fig 4: species-specific forest plots with multiple effect sizes, categorical variables (land use)
 ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4) +                     
-  #geom_hline(aes(yintercept = 0))+                ### keep zero line???
+  geom_point(colour="gray20", shape=21, size = 4, fill = "gray") +                     
   ylab("Effect size (95% CRI)")+
   scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  coord_flip()+
+  facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
+  theme_bw()+
+  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.text.x  = element_text(vjust = 0.5,size = 10,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
+
+ggplot(data = sppEfx_anti_logit[49:240,], aes(x = Species, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 4, fill = "gray") +                     
+  ylab("Probability of occurrence (95% CRI)")+
+  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  ylim(c(0,1))+
   coord_flip()+
   facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
   theme_bw()+
@@ -605,9 +618,29 @@ ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) +
 ## forest plot of shrub cover effects
 ggplot(data = sppEfx[1:48,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4) +                     
-  geom_hline(aes(yintercept = 0))+                ### keep zero line???
+  geom_point(colour="gray20", shape=21, size = 4, aes(fill = "gray20")) +   
+  geom_hline(aes(yintercept = 0))+
   ylab("Effect size (95% CRI)")+
+  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  coord_flip()+
+  facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
+  theme_bw()+
+  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.text.x  = element_text(vjust = 0.5,size = 10,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.ticks.length = unit(-0.15, "cm"),
+        strip.background = element_rect(fill = "gray95"),
+        strip.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),  
+        panel.grid.minor = element_blank(), 
+        legend.position = "none")
+
+ggplot(data = sppEfx_anti_logit[1:48,], aes(x = Species, y = effect)) + 
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
+  geom_point(colour="gray20", shape=21, size = 4, aes(fill = "gray20")) +                     
+  ylab("Probability of occurrence (95% CRI)")+
+  ylim(c(0,1))+
   scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
   coord_flip()+
   facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
