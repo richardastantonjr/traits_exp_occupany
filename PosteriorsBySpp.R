@@ -4,6 +4,7 @@
 library(tidyverse)
 library(reshape2) 
 library(gridExtra)
+##--------------------------------------------
 
 ## functions
 #return mean and 95% CRI
@@ -16,11 +17,13 @@ meanAnd90CRI <- function(x) {
   c(mean <- mean(x),quantile(x,c(0.05, 0.95))) 
 }
 
-## take the anti-logit of a value; appears to be equivalent to plogis in base with default location and scale parameters.
+## take the anti-logit of a value; appears to be equivalent to plogis in base when default location and scale parameters are used.
 anti_logit <- function(x){
   exp(x)/(1+exp(x))
 }
+##---------------------------------------------
 
+## load and organize data for processing
 ## load model output, organized as matrices named "Output1," "Output2," etc. and most covariate data
 load("./Occupancy_analysis_Swazi_birds_Bayesian20170807.RData")
 
