@@ -334,7 +334,6 @@ for(i in 1:dim(shrub.post)[1]) {
 meanAndCRI(wing_chord_slopes)
 meanAndCRI(wing_chord_quad_slopes)
 
-
 ## 90% CRI excludes 0
 meanAnd90CRI(wing_chord_slopes)
 meanAnd90CRI(wing_chord_quad_slopes)
@@ -351,7 +350,6 @@ for(i in 1:dim(shrub.post)[1]) {
 meanAndCRI(mass_slopes)
 meanAndCRI(mass_quad_slopes)
 
-
 ## positive effect but effect is essentially 0
 meanAnd90CRI(mass_slopes)
 meanAnd90CRI(mass_quad_slopes)
@@ -367,7 +365,6 @@ for(i in 1:dim(shrub.post)[1]) {
   }
 meanAndCRI(pseudo_load_slopes)
 meanAndCRI(pseudo_load_quad_slopes)
-
 
 meanAnd90CRI(pseudo_load_slopes)
 meanAnd90CRI(pseudo_load_quad_slopes)
@@ -432,7 +429,6 @@ for(i in 1:dim(pasture.post)[1]) {
 meanAndCRI(wing_chord_slopes_pasture)
 meanAndCRI(wing_chord_quad_slopes_pasture)
 
-
 meanAnd90CRI(wing_chord_slopes_pasture)
 meanAnd90CRI(wing_chord_quad_slopes_pasture)
 
@@ -474,7 +470,6 @@ for(i in 1:dim(homestead.post)[1]) {
 }
 meanAndCRI(wing_chord_slopes_homestead)
 meanAndCRI(wing_chord_quad_slopes_homestead)
-
 
 meanAnd90CRI(wing_chord_slopes_homestead)
 meanAnd90CRI(wing_chord_quad_slopes_homestead)
@@ -567,12 +562,25 @@ for(j in 2:6){           ### corresponds to column numbers for each covariate
   abline(v = quantile(Outputs_long[,j], probs = 0.975), col= "blue" )
 }
 
+## on probability scale
+allSppEfx <- matrix(nrow = 5, ncol = 3)
+for(j in 2:6){
+print(round(anti_logit( meanAndCRI(Outputs_long[,j])),2))
+  allSppEfx[j-1,] <- anti_logit( meanAndCRI(Outputs_long[,j]))
+}
+
 ## community wide effects, 90% CRIs
 for(j in 2:6){           
   plot(density(Outputs_long[,j])) 
   abline(v = quantile(Outputs_long[,j], probs = 0.05), col = "green" )
   abline(v = quantile(Outputs_long[,j], probs = 0.95), col= "green" )
 }
+
+## on probability scale
+for(j in 2:6){
+  print(round(anti_logit( meanAnd90CRI(Outputs_long[,j])),2))
+}
+
 
 #some graph code from Isabel's paper
 #Fig 4: species-specific forest plots with multiple effect sizes, categorical variables (land use)
@@ -834,9 +842,7 @@ mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) +
     panel.grid.minor = element_blank(), 
     legend.position = "none")
 
-grid.arrange(mass.fig.shrub, ncol = 1)
 grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2)
-
 
 
 
@@ -848,7 +854,8 @@ grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2)
 pseudo.fig.shrub <- ggplot(data = shrub_mass, aes(x = pseudo_loading, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
-  ylab("Effect size (95% CRI)")+
+  #ylab("Effect size (95% CRI)")+
+  xlab("Maneuverability (mass/wing chord)")+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.text.x  = element_text(vjust = 0.5,size = 10,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
@@ -864,12 +871,13 @@ pseudo.fig.shrub <- ggplot(data = shrub_mass, aes(x = pseudo_loading, y = effect
 pseudo.fig.prot <- ggplot(data = prot_mass, aes(x = pseudo_loading, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
-  ylab("Effect size (95% CRI)")+
   theme_bw()+
   theme(axis.title.x = element_blank(),
         axis.text.x  = element_blank(),
-        axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
-        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_blank(),
+       # axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
+       # axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
         axis.ticks.length = unit(-0.15, "cm"),
         strip.background = element_rect(fill = "gray95"),
         strip.text.x = element_text(size = 12, face = "bold"),
@@ -896,11 +904,12 @@ pseudo.fig.past <- ggplot(data = past_mass, aes(x = pseudo_loading, y = effect))
 pseudo.fig.home <- ggplot(data = home_mass, aes(x = pseudo_loading, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
-  ylab("Effect size (95% CRI)")+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
-        axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
-        axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
+        #axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.title.y = element_blank(),
+        axis.text.y  = element_blank(),
+        #axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
         axis.ticks.length = unit(-0.15, "cm"),
         strip.background = element_rect(fill = "gray95"),
         strip.text.x = element_text(size = 12, face = "bold"),
@@ -923,8 +932,9 @@ pseudo.fig.plant <- ggplot(data = plant_mass, aes(x = pseudo_loading, y = effect
         panel.grid.minor = element_blank(), 
         legend.position = "none")
 
-grid.arrange(pseudo.fig.shrub, ncol = 1)
-grid.arrange(pseudo.fig.prot, pseudo.fig.past, pseudo.fig.home, pseudo.fig.plant, ncol = 2)
+grid.arrange(mass.fig.shrub, pseudo.fig.shrub, ncol = 1, left = "Effect size (95% CRI)")
+grid.arrange(pseudo.fig.prot, pseudo.fig.past, pseudo.fig.home, pseudo.fig.plant, ncol = 2,
+             left = "Effect size (95% CRI)", bottom = "Maneuverability (mass/wing chord)")
 
 
 
