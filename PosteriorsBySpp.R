@@ -555,30 +555,12 @@ meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
 ###-----------------------------------------------------------------------------------
 
 ## community wide effects, 95% CRIs
-par(mfrow = c(2,3))
-for(j in 2:6){           ### corresponds to column numbers for each covariate
-  plot(density(Outputs_long[,j])) 
-  abline(v = quantile(Outputs_long[,j], probs = 0.025), col = "blue" )
-  abline(v = quantile(Outputs_long[,j], probs = 0.975), col= "blue" )
-}
-
-## on probability scale
+## on logit and probability scales
 allSppEfx <- matrix(nrow = 5, ncol = 3)
+allSppEfx2 <- matrix(nrow = 5, ncol = 3) 
 for(j in 2:6){
-print(round(anti_logit( meanAndCRI(Outputs_long[,j])),2))
   allSppEfx[j-1,] <- anti_logit( meanAndCRI(Outputs_long[,j]))
-}
-
-## community wide effects, 90% CRIs
-for(j in 2:6){           
-  plot(density(Outputs_long[,j])) 
-  abline(v = quantile(Outputs_long[,j], probs = 0.05), col = "green" )
-  abline(v = quantile(Outputs_long[,j], probs = 0.95), col= "green" )
-}
-
-## on probability scale
-for(j in 2:6){
-  print(round(anti_logit( meanAnd90CRI(Outputs_long[,j])),2))
+  allSppEfx2[j-1,] <- meanAndCRI(Outputs_long[,j])
 }
 
 
@@ -670,6 +652,48 @@ pd <- position_dodge(0.5) # move them .05 to the left and right
 nest.summary$betaName <- factor(nest.summary$betaName,levels = c("Protected", "Pasture", "Homestead","Plantation","Shrub cover"))
 diet.summary$betaName <- factor(diet.summary$betaName,levels = c("Protected", "Pasture", "Homestead","Plantation","Shrub cover"))
 
+allSppEfx <- data.frame(allSppEfx)
+allSppEfx$betaName <-  c("Homestead", "Pasture", "Protected","Plantation","Shrub cover")
+colnames(allSppEfx) <- c("effect","LCL","UCL","betaName")
+
+allSppEfx2 <- data.frame(allSppEfx2)
+allSppEfx2$betaName <-  c("Homestead", "Pasture", "Protected","Plantation","Shrub cover")
+colnames(allSppEfx2) <- c("effect","LCL","UCL","betaName")
+
+## community-wide average effects
+allSpp.fig <- ggplot(data = allSppEfx, aes(x = betaName, y = effect )) +
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
+  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, fill = "gray") + 
+  ylab("Average probability of occurrence (95% CRI)")+
+  scale_x_discrete(limits = rev(levels(allSppEfx$betaName)))+
+  coord_flip()+
+  theme_bw() +
+  theme(axis.title.x = element_text(size = 15,colour = "black"),
+        axis.text.x  = element_text(size = 10,colour = "black"),
+        axis.title.y = element_blank(), ##element_text(size = 15,colour = "black"), 
+        axis.text.y  = element_text(size = 9,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.ticks.length=unit(-0.1, "cm"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
+
+allSpp.fig2 <- ggplot(data = allSppEfx2, aes(x = betaName, y = effect )) +
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
+  geom_point(colour = "gray20", shape = 21, size = 4, position = pd, fill = "gray") + 
+  ylab("Effect size (95% CRI)")+
+  scale_x_discrete(limits = rev(levels(allSppEfx$betaName)))+
+  coord_flip()+
+  theme_bw() +
+  theme(axis.title.x = element_text(size = 15,colour = "black"),
+        axis.text.x  = element_text(size = 10,colour = "black"),
+        axis.title.y = element_blank(), ##element_text(size = 15,colour = "black"), 
+        axis.text.y  = element_text(size = 9,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
+        axis.ticks.length=unit(-0.1, "cm"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
+
+
 #nest substrates
 nest.fig <- ggplot(data = nest.summary[nest.summary$betaName != "Shrub cover", ], aes(x = betaName, y = effect, group = nest)) +
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0, size = 0.3, position = pd) +
@@ -680,8 +704,8 @@ nest.fig <- ggplot(data = nest.summary[nest.summary$betaName != "Shrub cover", ]
   scale_x_discrete(limits = levels(nest.summary$betaName)[1:4])+
   theme_bw()+
   theme(axis.title.x = element_blank(),
-        axis.text.x  = element_blank(), #element_text(size = 12,colour = "black"),
-        axis.title.y = element_blank(), #element_text(size = 15,colour = "black"), 
+        axis.text.x  = element_blank(), 
+        axis.title.y = element_blank(), 
         axis.text.y  = element_text(size = 9,colour = "black", margin = unit(c(0.2,0.2,0.2,0.2), "cm")),
         axis.ticks.length=unit(-0.1, "cm"),
         panel.grid.major = element_blank(), 
