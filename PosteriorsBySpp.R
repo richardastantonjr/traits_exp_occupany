@@ -571,9 +571,8 @@ for(j in 2:6){
 ##
 ###-----------------------------------------------------------------------------------
 #some graph code from Isabel's paper
-#Fig species-specific forest plots with multiple effect sizes, categorical variables (land use)
+#  species-specific forest plots with multiple effect sizes, categorical variables (land use)
 ## land uses are in the wrong order
-## Species need to be in phylogenetic order
 ## logit scale
 full.forest.fig <- ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
