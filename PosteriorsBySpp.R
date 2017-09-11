@@ -57,21 +57,30 @@ sppName <- rep(dimnames(AbunHists.subset)[[3]],  dim(Outputs[[1]])[1])
 sppName <- sort(sppName)
 Outputs_long$Species <- sppName 
 Outputs_long$X <- rep(1:dim(Outputs[[1]])[1],48)   ## add a row number for dcast to convert long to wide format
+TraitData <- TraitData[order(TraitData$RobertsNum),] 
+TraitData$Species <- factor(TraitData$Species, levels =  as.character (TraitData$Species))
+Outputs_long$Species <- factor(Outputs_long$Species, levels =  as.character (TraitData$Species))
+
+## merge posteriors and species traits
+Outputs_long <-merge(Outputs_long, TraitData)
+Outputs_long <- Outputs_long[order(Outputs_long$RobertsNum),] 
 
 ## remove extraneous material
 rm(list=ls()[! ls() %in% c("Outputs_long","TraitData", "meanAndCRI", "meanAnd90CRI", "anti_logit")])
 ##----------------------------------------------------------------------------------
-## summarize results for the community of common species
-pooledBetas <- colMeans(Outputs_long[1:5])  
-pooledHomesteadCRI <-  quantile(Outputs_long[,1], probs = c(0.025,0.975)) 
+
+
+## redundant but may be useful for building tables
+pooledBetas <- colMeans(Outputs_long[2:6])  
+pooledHomesteadCRI <-  quantile(Outputs_long[,2], probs = c(0.025,0.975)) 
 pooledHomesteadCRI
-pooledPastureCRI <-  quantile(Outputs_long[,2], probs = c(0.025,0.975)) 
+pooledPastureCRI <-  quantile(Outputs_long[,3], probs = c(0.025,0.975)) 
 pooledPastureCRI
-pooledProtectedCRI <-  quantile(Outputs_long[,3], probs = c(0.025,0.975)) 
+pooledProtectedCRI <-  quantile(Outputs_long[,4], probs = c(0.025,0.975)) 
 pooledProtectedCRI
-pooledSugarEstateCRI <-  quantile(Outputs_long[,4], probs = c(0.025,0.975)) 
+pooledSugarEstateCRI <-  quantile(Outputs_long[,5], probs = c(0.025,0.975)) 
 pooledSugarEstateCRI 
-pooledShrubCRI <-  quantile(Outputs_long[,5], probs = c(0.025,0.975)) 
+pooledShrubCRI <-  quantile(Outputs_long[,6], probs = c(0.025,0.975)) 
 pooledShrubCRI
 
 #create vectors of species by trait
@@ -87,8 +96,6 @@ diet.fruit <- subset(TraitData, Diet == "fruit", select=c(Species))
 diet.seed <- subset(TraitData, Diet == "seeds", select=c(Species))
 diet.nectar <- subset(TraitData, Diet == "nectar", select=c(Species))
 
-## merge posteriors and species traits
-Outputs_long <-merge(Outputs_long, TraitData)
 #subset by effect size or beta, keeping posterior draw, species beta:
 shrub.post<-subset(Outputs_long, select=c("X", "Species","beta1"))
 homestead.post<-subset(Outputs_long, select=c("X", "Species","beta.l[1]"))
@@ -398,7 +405,6 @@ for(i in 1:dim(protected.post)[1]) {
 meanAndCRI(mass_slopes_protected)
 meanAndCRI(mass_quad_slopes_protected)
 
-
 ## at 90%, mass has a positive effect
 meanAnd90CRI(mass_slopes_protected)
 meanAnd90CRI(mass_quad_slopes_protected)
@@ -413,7 +419,6 @@ for(i in 1:dim(protected.post)[1]) {
 }
 meanAndCRI(pseudo_load_slopes_protected)
 meanAndCRI(pseudo_load_quad_slopes_protected)
-
 
 meanAnd90CRI(pseudo_load_slopes_protected)
 meanAnd90CRI(pseudo_load_quad_slopes_protected)
@@ -547,13 +552,7 @@ meanAndCRI(pseudo_load_quad_slopes_sugarEstate)
 meanAnd90CRI(pseudo_load_slopes_sugarEstate)
 meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
 
-####-----------------------------------------------------------------------------------
-###------------------------------------------------------------------------------------
-
-###                    FIGURES
-##
-###-----------------------------------------------------------------------------------
-
+## summarize results for the community of common species
 ## community wide effects, 95% CRIs
 ## on logit and probability scales
 allSppEfx <- matrix(nrow = 5, ncol = 3)
@@ -564,13 +563,23 @@ for(j in 2:6){
 }
 
 
+
+####-----------------------------------------------------------------------------------
+###------------------------------------------------------------------------------------
+
+###                    FIGURES
+##
+###-----------------------------------------------------------------------------------
 #some graph code from Isabel's paper
-#Fig 4: species-specific forest plots with multiple effect sizes, categorical variables (land use)
-ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) + 
+#Fig species-specific forest plots with multiple effect sizes, categorical variables (land use)
+## land uses are in the wrong order
+## Species need to be in phylogenetic order
+## logit scale
+full.forest.fig <- ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
-  geom_point(colour="gray20", shape=21, size = 4, fill = "gray") +                     
+  geom_point(colour="gray20", shape=21, size = 4, fill = "salmon") +                     
   ylab("Effect size (95% CRI)")+
-  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  scale_x_discrete(limits = rev(levels(TraitData$Species)))+
   coord_flip()+
   facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
   theme_bw()+
@@ -585,11 +594,12 @@ ggplot(data = sppEfx[49:240,], aes(x = Species, y = effect)) +
         panel.grid.minor = element_blank(), 
         legend.position = "none")
 
+## same data on probability scale
 ggplot(data = sppEfx_anti_logit[49:240,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 4, fill = "gray") +                     
   ylab("Probability of occurrence (95% CRI)")+
-  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  scale_x_discrete(limits = rev(levels(TraitData$Species)))+
   ylim(c(0,1))+
   coord_flip()+
   facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
@@ -606,12 +616,12 @@ ggplot(data = sppEfx_anti_logit[49:240,], aes(x = Species, y = effect)) +
         legend.position = "none")
 
 ## forest plot of shrub cover effects
-ggplot(data = sppEfx[1:48,], aes(x = Species, y = effect)) + 
+full.forest.fig2<- ggplot(data = sppEfx[1:48,], aes(x = Species, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 4, fill = "salmon") +   
   geom_hline(aes(yintercept = 0))+
   ylab("Effect size (95% CRI)")+
-  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  scale_x_discrete(limits = rev(levels(TraitData$Species)))+
   coord_flip()+
   facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
   theme_bw()+
@@ -631,7 +641,7 @@ ggplot(data = sppEfx_anti_logit[1:48,], aes(x = Species, y = effect)) +
   geom_point(colour="gray20", shape=21, size = 4, fill = "salmon") +                     
   ylab("Probability of occurrence (95% CRI)")+
   ylim(c(0,1))+
-  scale_x_discrete(limits = rev(levels(sppEfx$Species)))+
+  scale_x_discrete(limits = rev(levels(TraitData$Species)))+
   coord_flip()+
   facet_wrap(~betaName, scales = "free_x", ncol = 4)+ 
   theme_bw()+
@@ -765,7 +775,10 @@ diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", 
         panel.grid.minor = element_blank(), 
         legend.text = element_text(size = 9),legend.title = element_text(face = "bold", size = 10))
 
-#line up plots in 1 or 2 figures
+#line up plots in first batch of figures- community wide effects and categorical traits
+grid.arrange(full.forest.fig)
+grid.arrange(full.forest.fig2)
+grid.arrange(allSpp.fig, allSpp.fig2, ncol = 1)
 grid.arrange(nest.fig, diet.fig, ncol = 1, left = "Probability of occurrence (95% CRI)")
 grid.arrange(nest.fig2, diet.fig2, ncol = 1)
 
