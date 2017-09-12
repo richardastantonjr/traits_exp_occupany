@@ -3,6 +3,7 @@
 library(tidyverse)
 library(reshape2) 
 library(gridExtra)
+library(grid)
 ##--------------------------------------------
 
 ## functions
@@ -868,8 +869,9 @@ mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) +
     panel.grid.minor = element_blank(), 
     legend.position = "none")
 
-grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2, left = "Effect size (95% CRI)",
-             bottom = "log(Mass[g])")
+grid.arrange(mass.fig.prot, mass.fig.past, mass.fig.home, mass.fig.plant, ncol = 2, 
+            left = textGrob("Effect size (95% CRI)", rot = 90, gp = gpar(fontface = "bold", cex = 1.5)),
+            bottom = textGrob("log(Mass[g])", gp = gpar(fontface = "bold", cex = 1.5)) ) 
 
 
 ##----------------------------------------------------------
@@ -930,7 +932,7 @@ pseudo.fig.home <- ggplot(data = home_mass, aes(x = pseudo_loading, y = effect))
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
   theme_bw()+
-  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+  theme(axis.title.x = element_blank(), ## element_text(vjust = 1.5, size = 18,colour = "black"),
         #axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.title.y = element_blank(),
         axis.text.y  = element_blank(),
@@ -949,7 +951,7 @@ pseudo.fig.plant <- ggplot(data = plant_mass, aes(x = pseudo_loading, y = effect
   #geom_smooth(method = "lm", formula = y ~ poly(plant_mass$pseudo_loading, 2), colour = "red") + preferable but throws a dimension mismatch error
   stat_function(fun=function(x) -0.717 - 0.083*(x) + 23.264*(x)^2, colour = "red" , size = 2)+
   theme_bw()+
-  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+  theme(axis.title.x = element_blank(), ## element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.title.y = element_blank(),
         axis.text.y  = element_blank(),
         axis.ticks.length = unit(-0.15, "cm"),
@@ -961,10 +963,10 @@ pseudo.fig.plant <- ggplot(data = plant_mass, aes(x = pseudo_loading, y = effect
 
 grid.arrange(mass.fig.shrub, pseudo.fig.shrub, ncol = 1, left = "Effect size (95% CRI)")
 grid.arrange(pseudo.fig.prot, pseudo.fig.past, pseudo.fig.home, pseudo.fig.plant, ncol = 2,
-             left = "Effect size (95% CRI)", bottom = "Maneuverability (mass/wing chord)")
+             left = textGrob("Effect size (95% CRI)", rot = 90, gp = gpar(fontface = "bold", cex = 1.5)),
+             bottom = textGrob("Maneuverability (mass/wing chord)", gp = gpar(fontface = "bold", cex = 1.5)) ) 
 
-
-
+             
 #if probability scale is desired
 #shrub_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
 #  filter(betaName == "Shrub cover")
