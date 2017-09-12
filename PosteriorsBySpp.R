@@ -336,7 +336,6 @@ pvals_temp <- vector()
 for(i in 1:dim(shrub.post)[1]) {
   wing_chord_quad_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
   wing_chord_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
   }
 meanAndCRI(wing_chord_slopes)
 meanAndCRI(wing_chord_quad_slopes)
@@ -352,7 +351,6 @@ mass_quad_slopes <- vector()
 for(i in 1:dim(shrub.post)[1]) {
   mass_quad_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
   mass_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
   }
 meanAndCRI(mass_slopes)
 meanAndCRI(mass_quad_slopes)
@@ -368,7 +366,6 @@ pseudo_load_quad_slopes <- vector()
 for(i in 1:dim(shrub.post)[1]) {
   pseudo_load_quad_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
   pseudo_load_slopes[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(shrub.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
   }
 meanAndCRI(pseudo_load_slopes)
 meanAndCRI(pseudo_load_quad_slopes)
@@ -385,7 +382,6 @@ wing_chord_quad_slopes_protected <- vector()
 for(i in 1:dim(protected.post)[1]) {
   wing_chord_quad_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
   wing_chord_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(wing_chord_slopes_protected)
 meanAndCRI(wing_chord_quad_slopes_protected)
@@ -400,7 +396,6 @@ mass_quad_slopes_protected <- vector()
 for(i in 1:dim(protected.post)[1]) {
   mass_quad_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
   mass_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(mass_slopes_protected)
 meanAndCRI(mass_quad_slopes_protected)
@@ -415,7 +410,6 @@ pseudo_load_quad_slopes_protected <- vector()
 for(i in 1:dim(protected.post)[1]) {
   pseudo_load_quad_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
   pseudo_load_slopes_protected[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(protected.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(pseudo_load_slopes_protected)
 meanAndCRI(pseudo_load_quad_slopes_protected)
@@ -429,7 +423,6 @@ wing_chord_quad_slopes_pasture <- vector()
 for(i in 1:dim(pasture.post)[1]) {
   wing_chord_quad_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
   wing_chord_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(wing_chord_slopes_pasture)
 meanAndCRI(wing_chord_quad_slopes_pasture)
@@ -443,7 +436,6 @@ mass_quad_slopes_pasture <- vector()
 for(i in 1:dim(pasture.post)[1]) {
   mass_quad_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
   mass_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(mass_slopes_pasture)
 meanAndCRI(mass_quad_slopes_pasture)
@@ -457,7 +449,6 @@ pseudo_load_quad_slopes_pasture <- vector()
 for(i in 1:dim(pasture.post)[1]) {
   pseudo_load_quad_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
   pseudo_load_slopes_pasture[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(pasture.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(pseudo_load_slopes_pasture)
 meanAndCRI(pseudo_load_quad_slopes_pasture)
@@ -471,7 +462,6 @@ wing_chord_quad_slopes_homestead <- vector()
 for(i in 1:dim(homestead.post)[1]) {
   wing_chord_quad_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
   wing_chord_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Wing, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(wing_chord_slopes_homestead)
 meanAndCRI(wing_chord_quad_slopes_homestead)
@@ -485,7 +475,6 @@ mass_quad_slopes_homestead <- vector()
 for(i in 1:dim(homestead.post)[1]) {
   mass_quad_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
   mass_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ Mass, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(mass_slopes_homestead)
 meanAndCRI(mass_quad_slopes_homestead)
@@ -499,7 +488,6 @@ pseudo_load_quad_slopes_homestead <- vector()
 for(i in 1:dim(homestead.post)[1]) {
   pseudo_load_quad_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
   pseudo_load_slopes_homestead[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(homestead.post[i,2:49]) ~ pseudo_loading, data = TraitData))$coefficients[2,4]
 }
 meanAndCRI(pseudo_load_slopes_homestead)
 meanAndCRI(pseudo_load_quad_slopes_homestead)
@@ -511,13 +499,15 @@ meanAnd90CRI(pseudo_load_quad_slopes_homestead)
 ## minuscule quadratic effect of wing_chord on response to sugarEstate
 wing_chord_slopes_sugarEstate <- vector()
 wing_chord_quad_slopes_sugarEstate <- vector()
+wing_chord_intercepts_sugarEstate <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
   wing_chord_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,1]
   wing_chord_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$Wing))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[3,4]
+  wing_chord_intercepts_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Wing + wingSq, data = TraitData))$coefficients[1,1]
 }
 meanAndCRI(wing_chord_slopes_sugarEstate)
 meanAndCRI(wing_chord_quad_slopes_sugarEstate)
+meanAndCRI(wing_chord_intercepts_sugarEstate)
 
 meanAnd90CRI(wing_chord_slopes_sugarEstate)
 meanAnd90CRI(wing_chord_quad_slopes_sugarEstate)
@@ -526,13 +516,15 @@ meanAnd90CRI(wing_chord_quad_slopes_sugarEstate)
 ## Miniscule quadratic effect of mass on plantation effect size
 mass_slopes_sugarEstate <- vector()
 mass_quad_slopes_sugarEstate <- vector()
+mass_intercepts_sugarEstate <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
   mass_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
   mass_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
-  pvals_temp[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,4]
+  mass_intercepts_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[1,1]
 }
 meanAndCRI(mass_slopes_sugarEstate)
 meanAndCRI(mass_quad_slopes_sugarEstate)
+meanAndCRI(mass_intercepts_sugarEstate)
 
 meanAnd90CRI(mass_slopes_sugarEstate)
 meanAnd90CRI(mass_quad_slopes_sugarEstate)
