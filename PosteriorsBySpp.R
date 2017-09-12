@@ -533,13 +533,15 @@ meanAnd90CRI(mass_quad_slopes_sugarEstate)
 ## Massive quadratic effect of pseudo wing chord on plantation effect size
 pseudo_load_slopes_sugarEstate <- vector()
 pseudo_load_quad_slopes_sugarEstate <- vector()
+pseudo_load_intercepts_sugarEstate <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
   pseudo_load_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
   pseudo_load_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
-  pvals_temp[i] <-summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,4]
+  pseudo_load_intercepts_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[1,1]
 }
 meanAndCRI(pseudo_load_slopes_sugarEstate)
 meanAndCRI(pseudo_load_quad_slopes_sugarEstate)
+meanAndCRI(pseudo_load_intercepts_sugarEstate)
 
 meanAnd90CRI(pseudo_load_slopes_sugarEstate)
 meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
@@ -769,6 +771,7 @@ diet.fig2 <- ggplot(data = diet.summary[diet.summary$betaName == "Shrub cover", 
 #line up plots in first batch of figures- community wide effects and categorical traits
 grid.arrange(full.forest.fig)
 grid.arrange(full.forest.fig2)
+#grid.arrange(full.forest.fig, full.forest.fig2, ncol = 2)  ## ugly
 grid.arrange(allSpp.fig, allSpp.fig2, ncol = 1)
 grid.arrange(nest.fig, diet.fig, ncol = 1, left = "Probability of occurrence (95% CRI)")
 grid.arrange(nest.fig2, diet.fig2, ncol = 1)
@@ -805,16 +808,13 @@ mass.fig.shrub <- ggplot(data = shrub_mass, aes(x = log(Mass), y = effect)) +
         panel.grid.minor = element_blank(), 
         legend.position = "none")
 
-## intercepts are incorrect
 mass.fig.prot <- ggplot(data = prot_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
-  #geom_abline(aes(intercept= 0.5, slope = 0.04), colour = "salmon", size = 1)+
-  ylab("Effect size (95% CRI)")+
   theme_bw()+
   theme(axis.title.x = element_blank(),
         axis.text.x  = element_blank(),
-        axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
+        axis.title.y = element_blank(),  ##element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
         axis.ticks.length = unit(-0.15, "cm"),
         strip.background = element_rect(fill = "gray95"),
@@ -842,10 +842,9 @@ mass.fig.past <- ggplot(data = past_mass, aes(x = log(Mass), y = effect)) +
 mass.fig.home <- ggplot(data = home_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
-  ylab("Effect size (95% CRI)")+
   theme_bw()+
-  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
-    axis.title.y = element_text(vjust = 1.5, size = 18,colour = "black"),
+  theme(axis.title.x = element_blank(), ## element_text(vjust = 1.5, size = 18,colour = "black"),
+    axis.title.y = element_blank(), ##  element_text(vjust = 1.5, size = 18,colour = "black"),
     axis.text.y  = element_text(size=12, colour = "black", margin = unit(c(0.3,0.3,0.3,0.3), "cm")),
     axis.ticks.length = unit(-0.15, "cm"),
     strip.background = element_rect(fill = "gray95"),
@@ -854,13 +853,12 @@ mass.fig.home <- ggplot(data = home_mass, aes(x = log(Mass), y = effect)) +
     panel.grid.minor = element_blank(), 
     legend.position = "none")
 
-## intercept is incorrect
 mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
-  #geom_abline(aes(intercept= -2.5434, slope = 0.019), colour = "salmon", size = 1)+
+  stat_function(fun=function(x) -3.71 - 0.019*(x) + 0.005*(x)^2, colour = "red" , size = 2)+
   theme_bw()+
-  theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
+  theme(axis.title.x = element_blank(), ## element_text(vjust = 1.5, size = 18,colour = "black"),
     axis.title.y = element_blank(),
     axis.text.y  = element_blank(),
     axis.ticks.length = unit(-0.15, "cm"),
@@ -870,9 +868,8 @@ mass.fig.plant <- ggplot(data = plant_mass, aes(x = log(Mass), y = effect)) +
     panel.grid.minor = element_blank(), 
     legend.position = "none")
 
-grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2)
-
-
+grid.arrange(mass.fig.prot,mass.fig.past,mass.fig.home,mass.fig.plant, ncol = 2, left = "Effect size (95% CRI)",
+             bottom = "log(Mass[g])")
 
 
 ##----------------------------------------------------------
@@ -945,10 +942,12 @@ pseudo.fig.home <- ggplot(data = home_mass, aes(x = pseudo_loading, y = effect))
         panel.grid.minor = element_blank(), 
         legend.position = "none")
 
-## intercept is incorrect
 pseudo.fig.plant <- ggplot(data = plant_mass, aes(x = pseudo_loading, y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
+  #geom_abline(aes(intercept= 0.717, slope = -0.083), colour = "salmon", size = 1)+
+  #geom_smooth(method = "lm", formula = y ~ poly(plant_mass$pseudo_loading, 2), colour = "red") + preferable but throws a dimension mismatch error
+  stat_function(fun=function(x) -0.717 - 0.083*(x) + 23.264*(x)^2, colour = "red" , size = 2)+
   theme_bw()+
   theme(axis.title.x = element_text(vjust = 1.5, size = 18,colour = "black"),
         axis.title.y = element_blank(),
