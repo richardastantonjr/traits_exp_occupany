@@ -518,14 +518,17 @@ meanAnd90CRI(wing_chord_quad_slopes_sugarEstate)
 mass_slopes_sugarEstate <- vector()
 mass_quad_slopes_sugarEstate <- vector()
 mass_intercepts_sugarEstate <- vector()
+R2 <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
   mass_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[3,1]
   mass_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$Mass))$coefficients[2,1]
   mass_intercepts_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$coefficients[1,1]
-}
+  R2[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ Mass + massSq, data = TraitData))$r.squared
+  }
 meanAndCRI(mass_slopes_sugarEstate)
 meanAndCRI(mass_quad_slopes_sugarEstate)
 meanAndCRI(mass_intercepts_sugarEstate)
+meanAndCRI(R2)      ## mean: 0.089, CRI 0.008 - 0.264
 
 meanAnd90CRI(mass_slopes_sugarEstate)
 meanAnd90CRI(mass_quad_slopes_sugarEstate)
@@ -535,18 +538,27 @@ meanAnd90CRI(mass_quad_slopes_sugarEstate)
 pseudo_load_slopes_sugarEstate <- vector()
 pseudo_load_quad_slopes_sugarEstate <- vector()
 pseudo_load_intercepts_sugarEstate <- vector()
+R2 <- vector()
 for(i in 1:dim(sugarEstate.post)[1]) {
   pseudo_load_quad_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[3,1]
   pseudo_load_slopes_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$pseudo_loading))$coefficients[2,1]
   pseudo_load_intercepts_sugarEstate[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ pseudo_loading + pseudo_load_Sq, data = TraitData))$coefficients[1,1]
-}
+  R2[i] <- summary(lm( as.numeric(sugarEstate.post[i,2:49]) ~ TraitData$pseudo_loading))$r.squared
+  }
 meanAndCRI(pseudo_load_slopes_sugarEstate)
 meanAndCRI(pseudo_load_quad_slopes_sugarEstate)
 meanAndCRI(pseudo_load_intercepts_sugarEstate)
+meanAndCRI(R2)   ## mean 0.01, CRI: 0-0.06
 
 meanAnd90CRI(pseudo_load_slopes_sugarEstate)
 meanAnd90CRI(pseudo_load_quad_slopes_sugarEstate)
 
+##----------------------------------------------
+##         R2 for categorical covs
+##---------------------------------------------
+## Not determined.
+
+##---------------------------------------------------------------------------
 ## summarize results for the community of common species
 ## community wide effects, 95% CRIs
 ## on logit and probability scales
@@ -978,3 +990,23 @@ grid.arrange(pseudo.fig.prot, pseudo.fig.past, pseudo.fig.home, pseudo.fig.plant
 #  filter(betaName == "Homestead")
 #plant_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
 #  filter(betaName == "Plantation")
+
+
+## Fit GAMS to continuous covariates using spline functions within lm
+## INCOMPLETE
+
+## wing loading proxy #(wing chord / mass)# explains land use (sugarEstate) occupancy response; linear and quadratic forms
+## Massive quadratic effect of pseudo wing chord on plantation effect size
+pseudo_load_sugarEstate_ns <- list()
+pseudo_load <- TraitData$pseudo_loading
+for(i in 1:dim(sugarEstate.post)[1]) {
+  pseudo_load_sugarEstate_ns[[i]] <- lm( as.numeric(sugarEstate.post[i,2:49]) ~ ns(pseudo_load, df = 4))
+}
+
+
+gam::plot.gam(pseudo_load_sugarEstate_ns[[1]], se = F)
+for(i in 1990:dim(sugarEstate.post)[1]) {
+  gam::plot.gam(pseudo_load_sugarEstate_ns[[i]], se = F)
+}
+
+summary(pseudo_load_sugarEstate_ns[[i]])$coefficients[,]
