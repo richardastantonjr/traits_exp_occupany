@@ -804,7 +804,7 @@ home_mass <- merge(sppEfx, TraitData) %>%
 plant_mass <- merge(sppEfx, TraitData) %>% 
   filter(betaName == "Plantation")
 
-## Attempt to plot species responses in order of log(mass) and overlay best-fit lines
+## plot species responses in order of log(mass) and overlay best-fit lines
 mass.fig.shrub <- ggplot(data = shrub_mass, aes(x = log(Mass), y = effect)) + 
   geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0) +
   geom_point(colour="gray20", shape=21, size = 2, fill = "gray")+
@@ -983,7 +983,9 @@ grid.arrange(pseudo.fig.prot, pseudo.fig.past, pseudo.fig.home, pseudo.fig.plant
 ##-----------------------------------------------
 ##          write results to csv file(s) 
 ##-----------------------------------------------
-
+write.csv(sppEfx, "sppEfx.csv")
+write.csv(diet.summary, "dietEfx.csv")
+write.csv(nest.summary, "nestEfx.csv")
 
 #if probability scale is desired
 #shrub_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
