@@ -987,6 +987,18 @@ write.csv(sppEfx, "sppEfx.csv")
 write.csv(diet.summary, "dietEfx.csv")
 write.csv(nest.summary, "nestEfx.csv")
 
+
+##---------------------------------------------
+##       determine # of species exhibiting significant responses to shrub cover 
+##------------------------------------------------------------------------------------------------
+sum( ((shrub_mass$LCL < 0) == (shrub_mass$UCL < 0) ) )
+  
+ 
+prot_mass 
+past_mass 
+home_mass
+plant_mass 
+
 #if probability scale is desired
 #shrub_mass <- merge(sppEfx_anti_logit, TraitData) %>% 
 #  filter(betaName == "Shrub cover")
