@@ -1,0 +1,50 @@
+Model_type,,additive,additive,additive,additive,interaction,interaction,interaction,interaction
+Species_name,Latin_name,n.adapt,iterations,burn-in,thin,n.adapt,iterations,burn-in,thin
+Acacia Pied Barbet,Tricholaema leucomelas,5000,180000,15000,50,5000,180000,15000,50
+African Paradise Flycatcher,Terpsiphone viridis,5000,180000,15000,50,5000,180000,15000,50
+Barn Swallow,Hirundo rustica,5000,180000,15000,50,5000,180000,15000,50
+Black-backed Puffback,Dryoscopus cubla,5000,180000,15000,50,5000,180000,15000,50
+Black-crowned Tchagra,Tchagra senegalus,5000,180000,15000,50,5000,180000,15000,50
+Black-headed Oriole,Oriolus larvatus,5000,180000,15000,50,5000,180000,15000,50
+Blue Waxbill,Uraeginthus angolensis,5000,180000,15000,50,5000,180000,15000,50
+Brown-crowned Tchagra,Tchagra australis,5000,180000,15000,50,5000,180000,15000,50
+Cape Glossy Starling,Lamprotornis nitens,5000,180000,15000,50,5000,180000,15000,50
+Cape Turtle Dove,Streptopelia capicola,5000,180000,15000,50,15000,280000,50000,50
+Cape White-eye,Zosterops virens,5000,180000,15000,50,5000,180000,15000,50
+Cardinal Woodpecker,Dendropicos fuscescens,5000,180000,15000,50,5000,180000,15000,50
+Chinspot Batis,Batis molitor,5000,180000,15000,50,5000,180000,15000,50
+Dark-capped Bulbul,Pycnonotus tricolor,5000,180000,15000,50,5000,180000,15000,50
+Eastern Nicator,Nicator gularis,5000,180000,15000,50,5000,180000,15000,50
+Emerald-spotted Wood Dove,Turtur chalcospilos,5000,180000,15000,50,5000,180000,15000,50
+Fork-tailed Drongo,Dicrurus adsimilis,5000,180000,15000,50,5000,180000,15000,50
+Golden-breasted Bunting,Emberiza flaviventris,5000,180000,15000,50,15000,250000,50000,50
+Golden-tailed Woodpecker,Campethera abingoni,5000,180000,15000,50,5000,180000,15000,50
+Gorgeous Bushshrike,Telophorus viridis,5000,180000,15000,50,5000,180000,15000,50
+Green-backed Camaroptera,Camaroptera brachyura,5000,180000,15000,50,5000,180000,15000,50
+House Sparrow,Passer domesticus,5000,180000,15000,50,5000,180000,15000,50
+Kurrichane Thrush,Turdus libonyanus,5000,180000,15000,50,5000,180000,15000,50
+Long-billed Crombec,Sylvietta rufescens,5000,180000,15000,50,5000,180000,15000,50
+Rattling Cisticola,Cisticola chiniana,5000,180000,15000,50,5000,180000,15000,50
+Red-backed Shrike,Lanius collurio,5000,180000,15000,50,5000,180000,15000,50
+Red-eyed Dove,Streptopelia semitorquata,5000,180000,15000,50,15000,250000,50000,50
+Red-faced Cisticola,Cisticola erythrops,5000,180000,15000,50,5000,180000,15000,50
+Red-faced Mousebird,Urocolius indicus,5000,180000,15000,50,15000,250000,50000,50
+Scarlet-chested Sunbird,Chalcomitra senegalensis,5000,180000,15000,50,5000,180000,15000,50
+Sombre Greenbul,Andropadus importunus,5000,180000,15000,50,5000,180000,15000,50
+Southern Black Tit,Parus niger,5000,180000,15000,50,5000,180000,15000,50
+Southern Boubou,Laniarius ferrugineus,5000,180000,15000,50,5000,180000,15000,50
+Southern Fiscal,Lanius collaris,5000,180000,15000,50,5000,180000,15000,50
+Southern Grey-headed Sparrow,Passer diffusus,5000,180000,15000,50,5000,180000,15000,50
+Southern Masked Weaver,Ploceus velatus,5000,180000,15000,50,5000,180000,15000,50
+Speckled Mousebird,Colius striatus,5000,180000,15000,50,5000,180000,15000,50
+Spectacled Weaver,Ploceus ocularis,5000,180000,15000,50,15000,250000,50000,50
+Spotted Flycatcher,Muscicapa striata,5000,180000,15000,50,5000,180000,15000,50
+Tawny-flanked Prinia,Prinia subflava,5000,180000,15000,50,5000,180000,15000,50
+Terrestrial Brownbul,Phyllastrephus terrestris,5000,180000,15000,50,5000,180000,15000,50
+Violet-backed Starling,Cinnyricinclus leucogaster,5000,180000,15000,50,15000,250000,50000,50
+White-bellied Sunbird,Cinnyris talatala,5000,180000,15000,50,5000,180000,15000,50
+White-browed Scrub Robin,Cercotrichas leucophrys,5000,180000,15000,50,5000,180000,15000,50
+Willow Warbler,Phylloscopus trochilus,5000,180000,15000,50,5000,180000,15000,50
+Woodland Kingfisher,Halcyon senegalensis,5000,180000,15000,50,5000,180000,15000,50
+Yellow-breasted Apalis,Apalis flavida,5000,180000,15000,50,5000,180000,15000,50
+Yellow-fronted Canary,Crithagra mozambicus,5000,180000,15000,50,5000,180000,15000,50
